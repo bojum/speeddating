@@ -1,1 +1,31 @@
 # Data transformation
+
+The raw dataset contains 195 variables with 8378 rows. Only a subset of 195 variables are included in our analysis (more detail for this step in data transformation section). 
+
+
+
+Below is a script file that we use to clean the dataset.
+
+```{r, eval = FALSE}
+speed_dating <- dat %>% 
+  select(iid,wave,gender,age,race,from,field,field_cd,undergra,mn_sat,tuition,income,
+         imprace,expnum,
+         sports:yoga,
+         attr1_1:shar1_1,                                             # exp weight to others-1
+         attr1_s:shar1_s,                                             # exp weight to others-2
+         attr3_1:amb3_1,                                              # self-evaluate-1 (self)-1
+         attr3_s:amb3_s,                                              # self-evaluate-1 (self)-2
+         attr5_1:amb5_1,                                              # self-evaluate-2 (others)-1
+         wave,pid,met_o,match,dec_o,int_corr,samerace,age_o,race_o,
+         pf_o_att:pf_o_sha,                                           # score to others
+         attr_o:shar_o,like_o,prob_o,                                 # score received
+         attr1_2:shar1_2,                                             # exp weight to others-3
+         attr3_2:amb3_2,                                              # self-evaluate-1 (self)-3
+         attr5_2:amb5_2,                                              # self-evaluate-2 (others)-2
+         you_call,them_cal,
+         attr1_3:shar1_3,                                             # exp weight to others-4
+         attr3_3:amb3_3,                                              # self-evaluate-1 (self)-4
+         attr5_3:amb5_3,                                              # self-evaluate-2 (others)-3
+         attr:shar,like,prob
+         ) 
+```

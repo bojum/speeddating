@@ -1,9 +1,14 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "How to Get More Matches in Speed Dating"
+author: "Yingyu Cao (yy3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
 
 # Introduction
+
+```{r, eval = FALSE}
+bookdown::render_book("index.Rmd")
+browseURL("docs/index.html")
+```
 
