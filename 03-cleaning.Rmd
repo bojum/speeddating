@@ -2,7 +2,7 @@
 
 The raw dataset contains 195 variables with 8378 rows. Only a subset of 195 variables are included in our analysis (more detail for this step in data transformation section). 
 
-
+[data dict]
 
 Below is a script file that we use to clean the dataset.
 
