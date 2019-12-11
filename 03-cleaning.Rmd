@@ -7,6 +7,7 @@ The raw dataset contains 195 variables with 8378 rows. Only a subset of 195 vari
 Below is a script file that we use to clean the dataset.
 
 ```{r, eval = FALSE}
+library(tidyr)
 speed_dating <- dat %>% 
   select(iid,wave,gender,age,race,from,field,field_cd,undergra,mn_sat,tuition,income,
          imprace,expnum,
@@ -28,4 +29,31 @@ speed_dating <- dat %>%
          attr5_3:amb5_3,                                              # self-evaluate-2 (others)-3
          attr:shar,like,prob
          ) 
+
+# add indicator columns
+
+# operate row by row
+for (i in 1:nrow(speed_dating)) {
+  # for each row, get partner's id
+  pid = speed_dating[i, 'pid']
+  # add temporary columns that holds partner's location, field, sports, reading, movies
+  speed_dating[i, 'plocation'] = speed_dating[which(speed_dating$iid == pid)[1], 'from']
+  speed_dating[i, 'pfield'] = speed_dating[which(speed_dating$iid == pid)[1], 'field']
+  speed_dating[i, 'psports'] = speed_dating[which(speed_dating$iid == pid)[1], 'sports']
+  speed_dating[i, 'preading'] = speed_dating[which(speed_dating$iid == pid)[1], 'reading']
+  speed_dating[i, 'pmovies'] = speed_dating[which(speed_dating$iid == pid)[1], 'movies']
+}
+
+# append indicator columns that indicates whether this person and his/her partner share this feature
+speed_dating['samelocation'] <- if_else(speed_dating$from == speed_dating$plocation, 'Yes', 'No')
+speed_dating['samefield'] <- if_else(speed_dating$field == speed_dating$pfield, 'Yes', 'No')
+speed_dating['samesports'] <- if_else(speed_dating$psports >=7 & speed_dating$sports>=7, 'Yes', 'No')
+speed_dating['samereading'] <- if_else(speed_dating$preading >=7 & speed_dating$reading>=7, 'Yes', 'No')
+speed_dating['samemovies'] <- if_else(speed_dating$pmovies >=7 & speed_dating$movies>=7, 'Yes', 'No')
+
+# drop unecessary columns and missing data
+drops = c('plocation', 'pfield', 'psports', 'preading', 'pmovies')
+keeps = c('samerace', 'samelocation', 'samefield', 'samesports', 'samesports', 'samemovies')
+speed_dating <- speed_dating[ , !(names(speed_dating) %in% drops)]
+speed_dating <- speed_dating[complete.cases(speed_dating[,keeps]), ]
 ```
