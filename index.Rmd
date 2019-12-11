@@ -8,6 +8,7 @@ site: bookdown::bookdown_site
 # Introduction
 
 ```{r, eval = FALSE}
+## to locally render the book
 bookdown::render_book("index.Rmd")
 browseURL("docs/index.html")
 ```

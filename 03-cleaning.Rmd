@@ -2,13 +2,12 @@
 
 The raw dataset contains 195 variables with 8378 rows. Only a subset of 195 variables are included in our analysis (more detail for this step in data transformation section). 
 
-[data dict]
 
 Below is a script file that we use to clean the dataset.
 
 ```{r, eval = FALSE}
-library(tidyr)
-speed_dating <- dat %>% 
+
+speed_dating <- raw_dat %>% 
   select(iid,wave,gender,age,race,from,field,field_cd,undergra,mn_sat,tuition,income,
          imprace,expnum,
          sports:yoga,

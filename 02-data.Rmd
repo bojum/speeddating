@@ -4,4 +4,6 @@ The dataset for our project is `speed dating` dataset provided by Anna Montoya. 
 
 The data contains information about match and questionnaire from a speed dating experiment in 2002-2004 that was run by professors Ray Fisman and Sheena Iyengar from Columbia Business School. The primamry purpose of the collection was for their paper Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment. 
 
+For more information about the data, see the [metadata](https://github.com/bojum/speeddating/blob/master/data/Speed%20Dating%20Data%20Key.doc?raw=true) from the dataset provider. 
+
 
