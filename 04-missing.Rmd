@@ -1,1 +1,33 @@
 # Missing values
+
+```{r}
+load("data/speed_dating.RData")
+dat_missing <- speed_dating %>% 
+  select(attr1_1:shar1_1,                                             # exp weight to others-1
+         attr3_1:amb3_1,                                              # self-evaluate-1 (self)-1
+         attr1_2:shar1_2,                                             # exp weight to others-3
+         attr3_2:amb3_2,                                              # self-evaluate-1 (self)-3
+         attr1_3:shar1_3,                                             # exp weight to others-4
+         attr3_3:amb3_3,                                              # self-evaluate-1 (self)-4
+         pid,match,dec_o,samerace,
+         attr:shar,like,prob,                                         # score to others
+         goal) %>% 
+  rownames_to_column("id") %>% 
+  gather(key,value,-id) %>% 
+  mutate(missing=ifelse(is.na(value),"yes","no"),
+         missing2=ifelse(missing=="yes",1,0))
+
+tmp <- fct_reorder(dat_missing$id,-dat_missing$missing2,sum) %>% levels()
+breaks_values <- tmp[seq(0,dim(speed_dating)[1],round(dim(speed_dating)[1]/4,-3))]
+
+dat_missing %>% 
+  ggplot(aes(x=fct_reorder(key,-missing2,sum),y=fct_reorder(id,-missing2,sum),fill=missing))+
+  geom_tile()+
+  scale_fill_manual(values=c("lightblue","grey50"))+
+  scale_y_discrete(breaks=breaks_values,
+                   labels=seq(0,dim(speed_dating)[1],round(dim(speed_dating)[1]/4,-3))[-1])+
+  labs(x="variables",y="observations",title = "Missing Pattern")+
+  theme(axis.text.x = element_text(angle=90,hjust = 1))
+```
+
+There are several columns that have the same missing patterns because these columns are answered at the same time. For example, the columns with the most missing values are the question about the expectation and self-evaluation regarding to six different attributes two days after the datings (`attr1_3:shar1_3` and `attr3_3:sinc3_3`).
