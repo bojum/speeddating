@@ -50,9 +50,13 @@ speed_dating <- speed_dating[, !duplicated(colnames(speed_dating))]
 # drop unecessary columns and missing data
 drops = c('plocation', 'pfield')
 keeps = append(colnames(speed_dating %>% select(sports:yoga)), c('samelocation', 'samefield'))
-speed_dating <- speed_dating[complete.cases(speed_dating[,keeps]), ]
-
+speed_dating_q1 <- speed_dating[complete.cases(speed_dating[,keeps]), ]
+speed_dating <- speed_dating_q1
 ## end here
+```
+
+```{r}
+save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
 ```
 
 ```{r}
