@@ -1,20 +1,113 @@
+--- 
+title: "How to Get More Matches in Speed Dating"
+author: "Yingyu Cao (yy3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
 
-## Question: Will backrgound and common interests influence the match? Which feature is the most influential?
-
-
-
-To answer this question, we have to look at background and common interests seperately. Background includes three features: `race`, `from`, and `field`. We can do so by comparing the chance of matching by conditioning on whether they are from the same `race`, same `from` (location), and same `field`. 
-
-Data Cleaning:
-
-we would like to append 6 indicator columns that indicates whether this person and his/her partner share that feature in common (actually 5 because samerace is available in the original data). 
+# Introduction
 
 ```{r}
-library(ggplot2)
+library(knitr)
+library(kableExtra)
 library(tidyverse)
-library(vcd)
-library(jsonlite)
-load('data/speed_dating.RData')
+```
+
+```{r, eval = FALSE}
+## to locally render the book
+bookdown::render_book("index.Rmd")
+browseURL("docs/index.html")
+```
+
+
+<!--chapter:end:index.Rmd-->
+
+# Data sources
+
+The dataset for our project is `speed dating` dataset provided by Anna Montoya. It is publicly available on [Data.com](https://data.world/annavmontoya/speed-dating-experiment) as an excel file. 
+
+The data contains information about match and questionnaire from a speed dating experiment in 2002-2004 that was run by professors Ray Fisman and Sheena Iyengar from Columbia Business School. The primamry purpose of the collection was for their paper [Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment](https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf). 
+
+## Experimental Design
+
+The experiment is design based on *Speed Dating* which is an event where participants have a four-minute conversation and decide if they want to meet each other again. They will get the other's contact information only if both parties "accept".
+
+Subjects in the experiments were students in graduate and professional school at Columbia University during the time of the experiment. They learned about the event through mass e-mail and fliers on distributed on campus. They had to sign up for the event by providing the experimentors with their names and email addresses and completing a pre-event survey ononline website. 
+
+There were 20 sessions of the experiment, all of which had the same setting. All participants were randomly assigned to one of the sessions. On the session day, participants who are unawared of the total number of participants on that day had to fill in a scorecard that contains 
+
+* Spaces to write the ID number of each person they met
+* Yes/No whether a subject wants to meet the person again
+* Six attributes on which a subject was to rate the person they met. The attributes are:
+    * Attractive
+    * Sincere
+    * Intelligent
+    * Fun
+    * Ambitious
+    * Shared Interests
+    
+There were roughly the same number of female and male participants in each sessions. Subjects only had conversation with those of different genders. Female subjects would meet all male subjects in the session. The scorecard was to be filled after each four-minute conversation.
+
+The day after the *Speed Dating* event, particiapants were asked to complete the follow-up online questionaire in order to obtain their matches. For more detail on the experiment procedure, please check out the [study](https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf).
+
+
+## Data Description
+
+```{r}
+data_dict <- read.csv(file = "data/data_dict_df.csv") %>% select(Variable_Name, Description) 
+
+data_dict %>% kable %>% kable_styling() %>% 
+  kableExtra::scroll_box(width = "100%", height = "400px")
+```
+
+For more information about the data, see the [metadata](https://github.com/bojum/speeddating/blob/master/data/Speed%20Dating%20Data%20Key.doc?raw=true) from the dataset provider. 
+
+
+
+<!--chapter:end:02-data.Rmd-->
+
+# Data transformation
+
+The raw dataset contains 195 variables with 8378 rows. Only a subset of 195 variables are included in our analysis (more detail for this step in data transformation section). 
+
+
+Below is a script file that we use to clean the dataset.
+
+```{r, eval = FALSE}
+
+speed_dating <- raw_dat %>% 
+  select(iid,wave,gender,age,race,from,field,field_cd,undergra,mn_sat,tuition,income,
+         imprace,expnum,
+         sports:yoga,
+         attr1_1:shar1_1,                                             # exp weight to others-1
+         attr1_s:shar1_s,                                             # exp weight to others-2
+         attr3_1:amb3_1,                                              # self-evaluate-1 (self)-1
+         attr3_s:amb3_s,                                              # self-evaluate-1 (self)-2
+         attr5_1:amb5_1,                                              # self-evaluate-2 (others)-1
+         wave,pid,met_o,match,dec_o,int_corr,samerace,age_o,race_o,
+         pf_o_att:pf_o_sha,                                           # score to others
+         attr_o:shar_o,like_o,prob_o,                                 # score received
+         attr1_2:shar1_2,                                             # exp weight to others-3
+         attr3_2:amb3_2,                                              # self-evaluate-1 (self)-3
+         attr5_2:amb5_2,                                              # self-evaluate-2 (others)-2
+         you_call,them_cal,
+         attr1_3:shar1_3,                                             # exp weight to others-4
+         attr3_3:amb3_3,                                              # self-evaluate-1 (self)-4
+         attr5_3:amb5_3,                                              # self-evaluate-2 (others)-3
+         attr:shar,like,prob
+         ) 
+
+# add indicator columns
+
+# get feature values of the partner
+for (i in 1:nrow(speed_dating)) {
+  # for each row, get partner's id
+  pid = speed_dating[i, 'pid']
+  # add temporary columns that holds partner's location, field, sports, reading, movies
+  speed_dating[i, 'plocation'] = speed_dating[which(speed_dating$iid == pid)[1], 'from']
+  speed_dating[i, 'pfield'] = speed_dating[which(speed_dating$iid == pid)[1], 'field']
+}
+
 # append indicator columns for location, field, and income
 speed_dating['samelocation'] <- if_else(speed_dating$from == speed_dating$plocation, 'Yes', 'No')
 speed_dating['samefield'] <- if_else(speed_dating$field == speed_dating$pfield, 'Yes', 'No')
@@ -42,13 +135,51 @@ speed_dating <- speed_dating[, !duplicated(colnames(speed_dating))]
 # drop unecessary columns and missing data
 drops = c('plocation', 'pfield')
 keeps = append(colnames(speed_dating %>% select(sports:yoga)), c('samelocation', 'samefield'))
-
 speed_dating <- speed_dating[complete.cases(speed_dating[,keeps]), ]
+```
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+# Missing values
+
+<!--chapter:end:04-missing.Rmd-->
+
+# Results
+
+```{r, child = "Influential_Features.Rmd"}
 
 ```
 
+<!--chapter:end:05-results.Rmd-->
+
+# Interactive component
+
+
+
+<!--chapter:end:06-interactive.Rmd-->
+
+# Conclusion
+
+
+<!--chapter:end:07-conclusion.Rmd-->
+
+
+## Question: Will backrgound and common interests influence the match? Which feature is the most influential?
+
+
+
+To answer this question, we have to look at background and common interests seperately. Background includes three features: `race`, `from`, and `field`. We can do so by comparing the chance of matching by conditioning on whether they are from the same `race`, same `from` (location), and same `field`. 
+
+Data Cleaning:
+
+we would like to append 6 indicator columns that indicates whether this person and his/her partner share that feature in common (actually 5 because samerace is available in the original data). 
+
 ```{r}
-save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
+library(ggplot2)
+library(tidyverse)
+library(vcd)
+library(jsonlite)
+load('data/speed_dating.RData')
 ```
 
 ```{r}
@@ -294,4 +425,7 @@ cd_df <- cbind(cd_df, names)
 
 ggplot(cd_df,aes(x=Freq,y=fct_reorder(names,Freq)))+geom_point(color="blue")+ylab("")+xlab("Percent (%)")+ggtitle("Differences in Chance of Matching")
 ```
+
+
+<!--chapter:end:Influential_Features.Rmd-->
 
