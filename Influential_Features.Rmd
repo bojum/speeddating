@@ -82,8 +82,8 @@ cat(
 <svg width="910" height="550">		</svg>
 <script>
   //initialize the svg
-  var w = 600;
-  var h = 550;
+  var w = 800;
+  var h = 500;
   var margin = {top: 25, right: 25, bottom: 25, left: 25};
   var innerWidth = w - margin.left - margin.right;
   var innerHeight = h - margin.top - margin.bottom;
@@ -142,7 +142,7 @@ cat(
   //add labels for axis
   svg.append("text")
       .attr("x", "50")
-      .attr("y", "300")
+      .attr("y", "250")
       .attr("font-size","20")
       .attr("text-anchor","middle")
       .attr("font-family","helvetica")
@@ -156,7 +156,7 @@ cat(
                 .selectAll("text")
                   .data([dataset[0]], d=>d.key).enter()
                   .append("text")
-                  .attr("x", "330")
+                  .attr("x", "300")
                   .attr("y", "20")
                   .attr("font-size","20")
                   .attr("text-anchor","middle")
@@ -173,7 +173,7 @@ cat(
                     .attr("transform",  `translate (${margin.left}, ${margin.top})`)
                   .selectAll("circle")
                     .data(dataset, d=>d.key).enter().append("circle")
-                    .attr("cx", "550")
+                    .attr("cx", "580")
                     .attr("cy", (d,i) => i*50+125)
                     .attr("r", "13")
                     .attr("fill", "aliceblue")
@@ -186,7 +186,7 @@ cat(
                     .attr("transform",  `translate (${margin.left}, ${margin.top})`)
                   .selectAll("circle")
                     .data(dataset, d=>d.key).enter().append("circle")
-                    .attr("cx", "550")
+                    .attr("cx", "580")
                     .attr("cy", (d,i) => i*50+125)
                     .attr("r", "6")
                     .attr("fill", d => d.f)
@@ -211,7 +211,7 @@ cat(
                 .attr("transform", `translate (${margin.left}, ${margin.top})`)
               .selectAll("text")
                 .data(dataset, d=>d.key).enter().append("text")
-                .attr("x", "730")
+                .attr("x", "610")
                 .attr("y", (d, i) => i*50+130)
                 .attr("fill", d=>d.tf)
                 .attr("font-size","20")
