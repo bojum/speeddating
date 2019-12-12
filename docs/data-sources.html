@@ -24,7 +24,7 @@
 <meta name="author" content="Yingyu Cao (yy3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)" />
 
 
-<meta name="date" content="2019-12-11" />
+<meta name="date" content="2019-12-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -132,7 +132,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#experimental-design"><i class="fa fa-check"></i><b>2.1</b> Experimental Design</a></li>
+<li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#data-description"><i class="fa fa-check"></i><b>2.2</b> Data Description</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
@@ -160,9 +163,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="data-sources" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Data sources</h1>
 <p>The dataset for our project is <code>speed dating</code> dataset provided by Anna Montoya. It is publicly available on <a href="https://data.world/annavmontoya/speed-dating-experiment">Data.com</a> as an excel file.</p>
-<p>The data contains information about match and questionnaire from a speed dating experiment in 2002-2004 that was run by professors Ray Fisman and Sheena Iyengar from Columbia Business School. The primamry purpose of the collection was for their paper Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment.</p>
+<p>The data contains information about match and questionnaire from a speed dating experiment in 2002-2004 that was run by professors Ray Fisman and Sheena Iyengar from Columbia Business School. The primamry purpose of the collection was for their paper <a href="https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf">Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment</a>.</p>
+<div id="experimental-design" class="section level2">
+<h2><span class="header-section-number">2.1</span> Experimental Design</h2>
+<p>The experiment is design based on <em>Speed Dating</em> which is an event where participants have a four-minute conversation and decide if they want to meet each other again. They will get the other’s contact information only if both parties “accept”.</p>
+<p>Subjects in the experiments were students in graduate and professional school at Columbia University during the time of the experiment. They learned about the event through mass e-mail and fliers on distributed on campus. They had to sign up for the event by providing the experimentors with their names and email addresses and completing a pre-event survey ononline website.</p>
+<p>There were 20 sessions of the experiment, all of which had the same setting. All participants were randomly assigned to one of the sessions. On the session day, participants who are unawared of the total number of participants on that day had to fill in a scorecard that contains</p>
+<ul>
+<li>Spaces to write the ID number of each person they met</li>
+<li>Yes/No whether a subject wants to meet the person again</li>
+<li>Six attributes on which a subject was to rate the person they met. The attributes are:
+<ul>
+<li>Attractive</li>
+<li>Sincere</li>
+<li>Intelligent</li>
+<li>Fun</li>
+<li>Ambitious</li>
+<li>Shared Interests</li>
+</ul></li>
+</ul>
+<p>There were roughly the same number of female and male participants in each sessions. Subjects only had conversation with those of different genders. Female subjects would meet all male subjects in the session. The scorecard was to be filled after each four-minute conversation.</p>
+<p>The day after the <em>Speed Dating</em> event, particiapants were asked to complete the follow-up online questionaire in order to obtain their matches. For more detail on the experiment procedure, please check out the <a href="https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf">study</a>.</p>
+</div>
+<div id="data-description" class="section level2">
+<h2><span class="header-section-number">2.2</span> Data Description</h2>
 <p>For more information about the data, see the <a href="https://github.com/bojum/speeddating/blob/master/data/Speed%20Dating%20Data%20Key.doc?raw=true">metadata</a> from the dataset provider.</p>
 
+</div>
 </div>
             </section>
 
