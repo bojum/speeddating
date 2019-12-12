@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
 <style type="text/css">
@@ -138,9 +139,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a><ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#question-will-backrgound-and-common-interests-influence-the-match-which-feature-is-the-most-influential"><i class="fa fa-check"></i><b>5.1</b> Question: Will backrgound and common interests influence the match? Which feature is the most influential?</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
-<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
+<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a><ul>
+<li class="chapter" data-level="7.1" data-path="conclusion.html"><a href="conclusion.html#question-will-backrgound-and-common-interests-influence-the-match-which-feature-is-the-most-influential-1"><i class="fa fa-check"></i><b>7.1</b> Question: Will backrgound and common interests influence the match? Which feature is the most influential?</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -164,54 +169,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
 <p>The raw dataset contains 195 variables with 8378 rows. Only a subset of 195 variables are included in our analysis (more detail for this step in data transformation section).</p>
 <p>Below is a script file that we use to clean the dataset.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">speed_dating &lt;-<span class="st"> </span>raw_dat <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(iid,wave,gender,age,race,from,field,field_cd,undergra,mn_sat,tuition,income,</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">         imprace,expnum,</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">         sports<span class="op">:</span>yoga,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">         attr1_<span class="dv">1</span><span class="op">:</span>shar1_<span class="dv">1</span>,                                             <span class="co"># exp weight to others-1</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">         attr1_s<span class="op">:</span>shar1_s,                                             <span class="co"># exp weight to others-2</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">         attr3_<span class="dv">1</span><span class="op">:</span>amb3_<span class="dv">1</span>,                                              <span class="co"># self-evaluate-1 (self)-1</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">         attr3_s<span class="op">:</span>amb3_s,                                              <span class="co"># self-evaluate-1 (self)-2</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">         attr5_<span class="dv">1</span><span class="op">:</span>amb5_<span class="dv">1</span>,                                              <span class="co"># self-evaluate-2 (others)-1</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">         wave,pid,met_o,match,dec_o,int_corr,samerace,age_o,race_o,</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">         pf_o_att<span class="op">:</span>pf_o_sha,                                           <span class="co"># score to others</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">         attr_o<span class="op">:</span>shar_o,like_o,prob_o,                                 <span class="co"># score received</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">         attr1_<span class="dv">2</span><span class="op">:</span>shar1_<span class="dv">2</span>,                                             <span class="co"># exp weight to others-3</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">         attr3_<span class="dv">2</span><span class="op">:</span>amb3_<span class="dv">2</span>,                                              <span class="co"># self-evaluate-1 (self)-3</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">         attr5_<span class="dv">2</span><span class="op">:</span>amb5_<span class="dv">2</span>,                                              <span class="co"># self-evaluate-2 (others)-2</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">         you_call,them_cal,</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">         attr1_<span class="dv">3</span><span class="op">:</span>shar1_<span class="dv">3</span>,                                             <span class="co"># exp weight to others-4</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">         attr3_<span class="dv">3</span><span class="op">:</span>amb3_<span class="dv">3</span>,                                              <span class="co"># self-evaluate-1 (self)-4</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">         attr5_<span class="dv">3</span><span class="op">:</span>amb5_<span class="dv">3</span>,                                              <span class="co"># self-evaluate-2 (others)-3</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">         attr<span class="op">:</span>shar,like,prob</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">         ) </a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co"># add indicator columns</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co"># operate row by row</span></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(speed_dating)) {</a>
-<a class="sourceLine" id="cb2-27" data-line-number="27">  <span class="co"># for each row, get partner&#39;s id</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28">  pid =<span class="st"> </span>speed_dating[i, <span class="st">&#39;pid&#39;</span>]</a>
-<a class="sourceLine" id="cb2-29" data-line-number="29">  <span class="co"># add temporary columns that holds partner&#39;s location, field, sports, reading, movies</span></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30">  speed_dating[i, <span class="st">&#39;plocation&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;from&#39;</span>]</a>
-<a class="sourceLine" id="cb2-31" data-line-number="31">  speed_dating[i, <span class="st">&#39;pfield&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;field&#39;</span>]</a>
-<a class="sourceLine" id="cb2-32" data-line-number="32">  speed_dating[i, <span class="st">&#39;psports&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;sports&#39;</span>]</a>
-<a class="sourceLine" id="cb2-33" data-line-number="33">  speed_dating[i, <span class="st">&#39;preading&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;reading&#39;</span>]</a>
-<a class="sourceLine" id="cb2-34" data-line-number="34">  speed_dating[i, <span class="st">&#39;pmovies&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;movies&#39;</span>]</a>
-<a class="sourceLine" id="cb2-35" data-line-number="35">}</a>
-<a class="sourceLine" id="cb2-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="co"># append indicator columns that indicates whether this person and his/her partner share this feature</span></a>
-<a class="sourceLine" id="cb2-38" data-line-number="38">speed_dating[<span class="st">&#39;samelocation&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>from <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>plocation, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb2-39" data-line-number="39">speed_dating[<span class="st">&#39;samefield&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>field <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>pfield, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb2-40" data-line-number="40">speed_dating[<span class="st">&#39;samesports&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>psports <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>sports<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb2-41" data-line-number="41">speed_dating[<span class="st">&#39;samereading&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>preading <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>reading<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb2-42" data-line-number="42">speed_dating[<span class="st">&#39;samemovies&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>pmovies <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>movies<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb2-43" data-line-number="43"></a>
-<a class="sourceLine" id="cb2-44" data-line-number="44"><span class="co"># drop unecessary columns and missing data</span></a>
-<a class="sourceLine" id="cb2-45" data-line-number="45">drops =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;plocation&#39;</span>, <span class="st">&#39;pfield&#39;</span>, <span class="st">&#39;psports&#39;</span>, <span class="st">&#39;preading&#39;</span>, <span class="st">&#39;pmovies&#39;</span>)</a>
-<a class="sourceLine" id="cb2-46" data-line-number="46">keeps =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;samerace&#39;</span>, <span class="st">&#39;samelocation&#39;</span>, <span class="st">&#39;samefield&#39;</span>, <span class="st">&#39;samesports&#39;</span>, <span class="st">&#39;samesports&#39;</span>, <span class="st">&#39;samemovies&#39;</span>)</a>
-<a class="sourceLine" id="cb2-47" data-line-number="47">speed_dating &lt;-<span class="st"> </span>speed_dating[ , <span class="op">!</span>(<span class="kw">names</span>(speed_dating) <span class="op">%in%</span><span class="st"> </span>drops)]</a>
-<a class="sourceLine" id="cb2-48" data-line-number="48">speed_dating &lt;-<span class="st"> </span>speed_dating[<span class="kw">complete.cases</span>(speed_dating[,keeps]), ]</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">speed_dating &lt;-<span class="st"> </span>raw_dat <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(iid,wave,gender,age,race,from,field,field_cd,undergra,mn_sat,tuition,income,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">         imprace,expnum,</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">         sports<span class="op">:</span>yoga,</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">         attr1_<span class="dv">1</span><span class="op">:</span>shar1_<span class="dv">1</span>,                                             <span class="co"># exp weight to others-1</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">         attr1_s<span class="op">:</span>shar1_s,                                             <span class="co"># exp weight to others-2</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">         attr3_<span class="dv">1</span><span class="op">:</span>amb3_<span class="dv">1</span>,                                              <span class="co"># self-evaluate-1 (self)-1</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">         attr3_s<span class="op">:</span>amb3_s,                                              <span class="co"># self-evaluate-1 (self)-2</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">         attr5_<span class="dv">1</span><span class="op">:</span>amb5_<span class="dv">1</span>,                                              <span class="co"># self-evaluate-2 (others)-1</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">         wave,pid,met_o,match,dec_o,int_corr,samerace,age_o,race_o,</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">         pf_o_att<span class="op">:</span>pf_o_sha,                                           <span class="co"># score to others</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">         attr_o<span class="op">:</span>shar_o,like_o,prob_o,                                 <span class="co"># score received</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">         attr1_<span class="dv">2</span><span class="op">:</span>shar1_<span class="dv">2</span>,                                             <span class="co"># exp weight to others-3</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">         attr3_<span class="dv">2</span><span class="op">:</span>amb3_<span class="dv">2</span>,                                              <span class="co"># self-evaluate-1 (self)-3</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">         attr5_<span class="dv">2</span><span class="op">:</span>amb5_<span class="dv">2</span>,                                              <span class="co"># self-evaluate-2 (others)-2</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">         you_call,them_cal,</a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">         attr1_<span class="dv">3</span><span class="op">:</span>shar1_<span class="dv">3</span>,                                             <span class="co"># exp weight to others-4</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">         attr3_<span class="dv">3</span><span class="op">:</span>amb3_<span class="dv">3</span>,                                              <span class="co"># self-evaluate-1 (self)-4</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">         attr5_<span class="dv">3</span><span class="op">:</span>amb5_<span class="dv">3</span>,                                              <span class="co"># self-evaluate-2 (others)-3</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">         attr<span class="op">:</span>shar,like,prob</a>
+<a class="sourceLine" id="cb4-21" data-line-number="21">         ) </a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co"># add indicator columns</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co"># operate row by row</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(speed_dating)) {</a>
+<a class="sourceLine" id="cb4-27" data-line-number="27">  <span class="co"># for each row, get partner&#39;s id</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28">  pid =<span class="st"> </span>speed_dating[i, <span class="st">&#39;pid&#39;</span>]</a>
+<a class="sourceLine" id="cb4-29" data-line-number="29">  <span class="co"># add temporary columns that holds partner&#39;s location, field, sports, reading, movies</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30">  speed_dating[i, <span class="st">&#39;plocation&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;from&#39;</span>]</a>
+<a class="sourceLine" id="cb4-31" data-line-number="31">  speed_dating[i, <span class="st">&#39;pfield&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;field&#39;</span>]</a>
+<a class="sourceLine" id="cb4-32" data-line-number="32">  speed_dating[i, <span class="st">&#39;psports&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;sports&#39;</span>]</a>
+<a class="sourceLine" id="cb4-33" data-line-number="33">  speed_dating[i, <span class="st">&#39;preading&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;reading&#39;</span>]</a>
+<a class="sourceLine" id="cb4-34" data-line-number="34">  speed_dating[i, <span class="st">&#39;pmovies&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;movies&#39;</span>]</a>
+<a class="sourceLine" id="cb4-35" data-line-number="35">}</a>
+<a class="sourceLine" id="cb4-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co"># append indicator columns that indicates whether this person and his/her partner share this feature</span></a>
+<a class="sourceLine" id="cb4-38" data-line-number="38">speed_dating[<span class="st">&#39;samelocation&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>from <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>plocation, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb4-39" data-line-number="39">speed_dating[<span class="st">&#39;samefield&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>field <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>pfield, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb4-40" data-line-number="40">speed_dating[<span class="st">&#39;samesports&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>psports <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>sports<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb4-41" data-line-number="41">speed_dating[<span class="st">&#39;samereading&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>preading <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>reading<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb4-42" data-line-number="42">speed_dating[<span class="st">&#39;samemovies&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>pmovies <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>movies<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb4-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb4-44" data-line-number="44"><span class="co"># drop unecessary columns and missing data</span></a>
+<a class="sourceLine" id="cb4-45" data-line-number="45">drops =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;plocation&#39;</span>, <span class="st">&#39;pfield&#39;</span>, <span class="st">&#39;psports&#39;</span>, <span class="st">&#39;preading&#39;</span>, <span class="st">&#39;pmovies&#39;</span>)</a>
+<a class="sourceLine" id="cb4-46" data-line-number="46">keeps =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;samerace&#39;</span>, <span class="st">&#39;samelocation&#39;</span>, <span class="st">&#39;samefield&#39;</span>, <span class="st">&#39;samesports&#39;</span>, <span class="st">&#39;samesports&#39;</span>, <span class="st">&#39;samemovies&#39;</span>)</a>
+<a class="sourceLine" id="cb4-47" data-line-number="47">speed_dating &lt;-<span class="st"> </span>speed_dating[ , <span class="op">!</span>(<span class="kw">names</span>(speed_dating) <span class="op">%in%</span><span class="st"> </span>drops)]</a>
+<a class="sourceLine" id="cb4-48" data-line-number="48">speed_dating &lt;-<span class="st"> </span>speed_dating[<span class="kw">complete.cases</span>(speed_dating[,keeps]), ]</a></code></pre></div>
 
 </div>
             </section>

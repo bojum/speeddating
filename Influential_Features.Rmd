@@ -1,20 +1,5 @@
----
-title: "Influential_Features"
-author: "Zhi Qi"
-date: "11/22/2019"
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-
-Question: Will backrgound and common interests influence the match? Which feature is the most influential?
+## Question: Will backrgound and common interests influence the match? Which feature is the most influential?
 
 
 
@@ -24,12 +9,12 @@ Data Cleaning:
 
 we would like to append 6 indicator columns that indicates whether this person and his/her partner share that feature in common (actually 5 because samerace is available in the original data). 
 
-```{r results="asis"}
+```{r}
 library(ggplot2)
 library(tidyverse)
 library(vcd)
 library(jsonlite)
-load('speed_dating.RData')
+load('data/speed_dating.RData')
 # get feature values of the partner
 for (i in 1:nrow(speed_dating)) {
   # for each row, get partner's id
@@ -66,6 +51,12 @@ speed_dating <- speed_dating[, !duplicated(colnames(speed_dating))]
 drops = c('plocation', 'pfield')
 keeps = append(colnames(speed_dating %>% select(sports:yoga)), c('samelocation', 'samefield'))
 speed_dating <- speed_dating[complete.cases(speed_dating[,keeps]), ]
+
+## end here
+```
+
+```{r}
+# for mosaic plot 
 
 # create a clean dataframe for each common feature
 sameracedata = speed_dating %>% group_by(samerace, match) %>% summarise(Freq = n()) %>% ungroup() %>% mutate(samerace = if_else(samerace == 1, "Yes", "No")) %>% mutate(match = if_else(match == 1, "Yes", "No"))
