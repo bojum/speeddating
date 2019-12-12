@@ -29,13 +29,24 @@ The day after the *Speed Dating* event, particiapants were asked to complete the
 
 ## Data Description
 
+The raw dataset from the source has 195 variables and 8378 rows. The number of rows do not represent the total number of participants in the experiment. The data provider had transformed the dataset by gathering to match some variables between a subject and each of its partner. We have further cleaned the dataset so that it includes only important variables (see more detail in data cleaning section). Variables in the analysis is summarized in the metadata below. 
+
 ```{r}
-data_dict <- read.csv(file = "data/data_dict_df.csv") %>% select(Variable_Name, Description) 
+data_dict <- read.csv(file = "data/metadata_var.csv") %>% select(Variable, Description) 
 
 data_dict %>% kable %>% kable_styling() %>% 
-  kableExtra::scroll_box(width = "100%", height = "400px")
+  kableExtra::scroll_box(width = "100%", height = "600px")
 ```
 
-For more information about the data, see the [metadata](https://github.com/bojum/speeddating/blob/master/data/Speed%20Dating%20Data%20Key.doc?raw=true) from the dataset provider. 
+Participants were also asked to rate five (and six in some cases) attributes for themselves and for people they met (i) before the event (if applicable), (ii) a day after the event, and (iii) 2 weeks after the event. The variable names are in the form of `[attribute][#]_[#]`.
+
+```{r}
+read.csv(file = "data/metadata_attr.csv") %>% 
+  kable %>% kable_styling() %>% 
+  kableExtra::scroll_box(width = "100%", height = "600px")
+```
+
+
+For more information about the raw data and questionaire, see the [metadata](https://github.com/bojum/speeddating/blob/master/data/Speed%20Dating%20Data%20Key.doc?raw=true) from the dataset provider. 
 
 

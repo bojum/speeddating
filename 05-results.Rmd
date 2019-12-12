@@ -1,5 +1,5 @@
 # Results
 
-```{r, child = "Influential_Features.Rmd"}
+```{r, child = "Influential_Features.Rmd", eval = FALSE}
 
 ```
