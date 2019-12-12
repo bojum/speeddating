@@ -21,7 +21,7 @@
   
   
 
-<meta name="author" content="Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)" />
+<meta name="author" content="Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Zhi Qi (zq2175)" />
 
 
 <meta name="date" content="2019-12-12" />
@@ -132,7 +132,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Dating 101</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#background"><i class="fa fa-check"></i><b>1.2</b> Background</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#our-goal"><i class="fa fa-check"></i><b>1.3</b> Our Goal</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#project-overview"><i class="fa fa-check"></i><b>1.4</b> Project Overview</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a><ul>
 <li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#experimental-design"><i class="fa fa-check"></i><b>2.1</b> Experimental Design</a></li>
 <li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#data-description"><i class="fa fa-check"></i><b>2.2</b> Data Description</a></li>
@@ -167,18 +172,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">How to Get More Matches in Speed Dating</h1>
-<p class="author"><em>Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)</em></p>
+<p class="author"><em>Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Zhi Qi (zq2175)</em></p>
 <p class="date"><em>2019-12-12</em></p>
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(knitr)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(kableExtra)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## to locally render the book</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">bookdown<span class="op">::</span><span class="kw">render_book</span>(<span class="st">&quot;index.Rmd&quot;</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">browseURL</span>(<span class="st">&quot;docs/index.html&quot;</span>)</a></code></pre></div>
+<div id="introduction-1" class="section level2">
+<h2><span class="header-section-number">1.1</span> Introduction</h2>
+<p>What is love at first sight? Imagine meeting a girl or a guy that you really like, and you want to make a better impression. How should you act out? How do you know if you are a good match for him/her? This project will help you understand what are the important factors that will help you make a better impression.</p>
+</div>
+<div id="background" class="section level2">
+<h2><span class="header-section-number">1.2</span> Background</h2>
+<p>We use speed experiment dating data collected by Columbia Business schooll as a foundation to the analyses in this project.</p>
+<p>Being popular since 1970s, speed dating is a formalized matchmaking process which enables singles to meet large numbers of new potential partners in a very short period of time (4 minutes in our data), which is the equivalent to having many “first sights” and being able to choose the potential partners that you like. If both participants like each other, then it is a “match” and they can exchange contact informations and such.</p>
+<p>For research purposes, participants in our data were asked to fill out several forms before and during the speed dating process. Our findings are based on such data.</p>
+</div>
+<div id="our-goal" class="section level2">
+<h2><span class="header-section-number">1.3</span> Our Goal</h2>
+<p>In this project, we explore what factors that influence the chances of getting a “match.” For example, will having a same hobby with your partner increase your chances? Or should you behave as confident you can to leave a better impression? If not, what things or factors are your partner looking for? We derive our focus on the factors that you can control.</p>
+</div>
+<div id="project-overview" class="section level2">
+<h2><span class="header-section-number">1.4</span> Project Overview</h2>
+<p>In section 2, we give an overview of our data, where it was from and what issues it may have. Then in section 3 &amp; 4, we describe our cleaning/transformation process and patterns for missing values. In section 5, we provide our analyses and interesting findings, and the answers to those questions above will be in this section as well. We include a interative section in section 6, where you can interact with the graphs and explore interesting findings. We include our conclusions to this project in section 7.</p>
 
+</div>
 </div>
             </section>
 
