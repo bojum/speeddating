@@ -16,8 +16,9 @@ library(vcd)
 library(jsonlite)
 ```
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 load('data/speed_dating.RData')
+
 # get feature values of the partner
 for (i in 1:nrow(speed_dating)) {
   # for each row, get partner's id
@@ -26,7 +27,6 @@ for (i in 1:nrow(speed_dating)) {
   speed_dating[i, 'plocation'] = speed_dating[which(speed_dating$iid == pid)[1], 'from']
   speed_dating[i, 'pfield'] = speed_dating[which(speed_dating$iid == pid)[1], 'field']
 }
-
 # append indicator columns for location, field, and income
 speed_dating['samelocation'] <- if_else(speed_dating$from == speed_dating$plocation, 'Yes', 'No')
 speed_dating['samefield'] <- if_else(speed_dating$field == speed_dating$pfield, 'Yes', 'No')
@@ -44,6 +44,7 @@ f <- function(x){
   }
   return(result)
 }
+# append the newly added columns to the original data frame
 names = colnames(speed_dating %>% select(sports:yoga))
 common_features <- as.data.frame(do.call(cbind,lapply(names, f)))
 colnames(common_features)<- paste0('same',colnames(speed_dating %>% select(sports:yoga)))
@@ -52,20 +53,20 @@ speed_dating <- speed_dating[, !duplicated(colnames(speed_dating))]
 
 # drop unecessary columns and missing data
 drops = c('plocation', 'pfield')
-keeps = append(colnames(speed_dating %>% select(sports:yoga)), c('samelocation', 'samefield'))
-speed_dating_q1 <- speed_dating[complete.cases(speed_dating[,keeps]), ]
+speed_dating <- select(speed_dating, -drops)
+keeps = append(paste0('same',colnames(speed_dating %>% select(sports:yoga))), c('samelocation', 'samefield'))
+speed_dating <- speed_dating[complete.cases(speed_dating[,keeps]), ]
 
-## end here
 ```
 
 ```{r}
-#save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
+save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
 load(file = "data/speed_dating_q1.Rdata")
 speed_dating <- speed_dating_q1
 names = colnames(speed_dating %>% select(sports:yoga))
 ```
 
-```{r}
+```{r, results='asis'}
 # for mosaic plot 
 
 # create a clean dataframe for each common feature
@@ -93,8 +94,8 @@ cat(
 <svg width="910" height="550">		</svg>
 <script>
   //initialize the svg
-  var w = 910;
-  var h = 550;
+  var w = 800;
+  var h = 500;
   var margin = {top: 25, right: 25, bottom: 25, left: 25};
   var innerWidth = w - margin.left - margin.right;
   var innerHeight = h - margin.top - margin.bottom;
@@ -121,8 +122,8 @@ cat(
   //manually transform to a mosaic plot
   function format(data){
     var offset = 50;
-    var plotwidth = 400;
-    var plotheight = 400;
+    var plotwidth = 350;
+    var plotheight = 350;
     var bar2_x = (data[0].Freq+data[1].Freq)/d3.sum(data.map(d => d.Freq))*(plotwidth-5);
     var bar1_y = data[0].Freq/(data[0].Freq+data[1].Freq)*plotheight;
     var bar2_y = data[2].Freq/(data[2].Freq+data[3].Freq)*plotheight;
@@ -153,7 +154,7 @@ cat(
   //add labels for axis
   svg.append("text")
       .attr("x", "50")
-      .attr("y", "300")
+      .attr("y", "250")
       .attr("font-size","20")
       .attr("text-anchor","middle")
       .attr("font-family","helvetica")
@@ -167,7 +168,7 @@ cat(
                 .selectAll("text")
                   .data([dataset[0]], d=>d.key).enter()
                   .append("text")
-                  .attr("x", "330")
+                  .attr("x", "300")
                   .attr("y", "20")
                   .attr("font-size","20")
                   .attr("text-anchor","middle")
@@ -184,7 +185,7 @@ cat(
                     .attr("transform",  `translate (${margin.left}, ${margin.top})`)
                   .selectAll("circle")
                     .data(dataset, d=>d.key).enter().append("circle")
-                    .attr("cx", "700")
+                    .attr("cx", "580")
                     .attr("cy", (d,i) => i*50+125)
                     .attr("r", "13")
                     .attr("fill", "aliceblue")
@@ -197,7 +198,7 @@ cat(
                     .attr("transform",  `translate (${margin.left}, ${margin.top})`)
                   .selectAll("circle")
                     .data(dataset, d=>d.key).enter().append("circle")
-                    .attr("cx", "700")
+                    .attr("cx", "580")
                     .attr("cy", (d,i) => i*50+125)
                     .attr("r", "6")
                     .attr("fill", d => d.f)
@@ -222,7 +223,7 @@ cat(
                 .attr("transform", `translate (${margin.left}, ${margin.top})`)
               .selectAll("text")
                 .data(dataset, d=>d.key).enter().append("text")
-                .attr("x", "730")
+                .attr("x", "610")
                 .attr("y", (d, i) => i*50+130)
                 .attr("fill", d=>d.tf)
                 .attr("font-size","20")
