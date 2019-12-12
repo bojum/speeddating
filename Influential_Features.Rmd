@@ -14,6 +14,9 @@ library(ggplot2)
 library(tidyverse)
 library(vcd)
 library(jsonlite)
+```
+
+```{r, eval = FALSE}
 load('data/speed_dating.RData')
 # get feature values of the partner
 for (i in 1:nrow(speed_dating)) {
@@ -51,12 +54,15 @@ speed_dating <- speed_dating[, !duplicated(colnames(speed_dating))]
 drops = c('plocation', 'pfield')
 keeps = append(colnames(speed_dating %>% select(sports:yoga)), c('samelocation', 'samefield'))
 speed_dating_q1 <- speed_dating[complete.cases(speed_dating[,keeps]), ]
-speed_dating <- speed_dating_q1
+
 ## end here
 ```
 
 ```{r}
-save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
+#save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
+load(file = "data/speed_dating_q1.Rdata")
+speed_dating <- speed_dating_q1
+names = colnames(speed_dating %>% select(sports:yoga))
 ```
 
 ```{r}
