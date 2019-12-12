@@ -21,7 +21,7 @@
   
   
 
-<meta name="author" content="Yingyu Cao (yy3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)" />
+<meta name="author" content="Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)" />
 
 
 <meta name="date" content="2019-12-12" />
@@ -139,10 +139,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a><ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#question-will-backrgound-and-common-interests-influence-the-match-which-feature-is-the-most-influential"><i class="fa fa-check"></i><b>5.1</b> Question: Will backrgound and common interests influence the match? Which feature is the most influential?</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a><ul>
-<li class="chapter" data-level="7.1" data-path="conclusion.html"><a href="conclusion.html#question-will-backrgound-and-common-interests-influence-the-match-which-feature-is-the-most-influential"><i class="fa fa-check"></i><b>7.1</b> Question: Will backrgound and common interests influence the match? Which feature is the most influential?</a></li>
+<li class="chapter" data-level="7.1" data-path="conclusion.html"><a href="conclusion.html#question-will-backrgound-and-common-interests-influence-the-match-which-feature-is-the-most-influential-1"><i class="fa fa-check"></i><b>7.1</b> Question: Will backrgound and common interests influence the match? Which feature is the most influential?</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -191,30 +193,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb5-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co"># add indicator columns</span></a>
 <a class="sourceLine" id="cb5-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co"># operate row by row</span></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co"># get feature values of the partner</span></a>
 <a class="sourceLine" id="cb5-26" data-line-number="26"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(speed_dating)) {</a>
 <a class="sourceLine" id="cb5-27" data-line-number="27">  <span class="co"># for each row, get partner&#39;s id</span></a>
 <a class="sourceLine" id="cb5-28" data-line-number="28">  pid =<span class="st"> </span>speed_dating[i, <span class="st">&#39;pid&#39;</span>]</a>
 <a class="sourceLine" id="cb5-29" data-line-number="29">  <span class="co"># add temporary columns that holds partner&#39;s location, field, sports, reading, movies</span></a>
 <a class="sourceLine" id="cb5-30" data-line-number="30">  speed_dating[i, <span class="st">&#39;plocation&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;from&#39;</span>]</a>
 <a class="sourceLine" id="cb5-31" data-line-number="31">  speed_dating[i, <span class="st">&#39;pfield&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;field&#39;</span>]</a>
-<a class="sourceLine" id="cb5-32" data-line-number="32">  speed_dating[i, <span class="st">&#39;psports&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;sports&#39;</span>]</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33">  speed_dating[i, <span class="st">&#39;preading&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;reading&#39;</span>]</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34">  speed_dating[i, <span class="st">&#39;pmovies&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;movies&#39;</span>]</a>
-<a class="sourceLine" id="cb5-35" data-line-number="35">}</a>
-<a class="sourceLine" id="cb5-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co"># append indicator columns that indicates whether this person and his/her partner share this feature</span></a>
-<a class="sourceLine" id="cb5-38" data-line-number="38">speed_dating[<span class="st">&#39;samelocation&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>from <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>plocation, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb5-39" data-line-number="39">speed_dating[<span class="st">&#39;samefield&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>field <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>pfield, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb5-40" data-line-number="40">speed_dating[<span class="st">&#39;samesports&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>psports <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>sports<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb5-41" data-line-number="41">speed_dating[<span class="st">&#39;samereading&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>preading <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>reading<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb5-42" data-line-number="42">speed_dating[<span class="st">&#39;samemovies&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>pmovies <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating<span class="op">$</span>movies<span class="op">&gt;=</span><span class="dv">7</span>, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
-<a class="sourceLine" id="cb5-43" data-line-number="43"></a>
-<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co"># drop unecessary columns and missing data</span></a>
-<a class="sourceLine" id="cb5-45" data-line-number="45">drops =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;plocation&#39;</span>, <span class="st">&#39;pfield&#39;</span>, <span class="st">&#39;psports&#39;</span>, <span class="st">&#39;preading&#39;</span>, <span class="st">&#39;pmovies&#39;</span>)</a>
-<a class="sourceLine" id="cb5-46" data-line-number="46">keeps =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;samerace&#39;</span>, <span class="st">&#39;samelocation&#39;</span>, <span class="st">&#39;samefield&#39;</span>, <span class="st">&#39;samesports&#39;</span>, <span class="st">&#39;samesports&#39;</span>, <span class="st">&#39;samemovies&#39;</span>)</a>
-<a class="sourceLine" id="cb5-47" data-line-number="47">speed_dating &lt;-<span class="st"> </span>speed_dating[ , <span class="op">!</span>(<span class="kw">names</span>(speed_dating) <span class="op">%in%</span><span class="st"> </span>drops)]</a>
-<a class="sourceLine" id="cb5-48" data-line-number="48">speed_dating &lt;-<span class="st"> </span>speed_dating[<span class="kw">complete.cases</span>(speed_dating[,keeps]), ]</a></code></pre></div>
+<a class="sourceLine" id="cb5-32" data-line-number="32">}</a>
+<a class="sourceLine" id="cb5-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co"># append indicator columns for location, field, and income</span></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35">speed_dating[<span class="st">&#39;samelocation&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>from <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>plocation, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb5-36" data-line-number="36">speed_dating[<span class="st">&#39;samefield&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>field <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>pfield, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb5-37" data-line-number="37"></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co"># get the feature values of all the hobbies of the partner</span></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39">f &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb5-40" data-line-number="40">  tmp &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;holder&quot;</span> =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(speed_dating)[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb5-41" data-line-number="41">  result &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;holder&quot;</span> =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(speed_dating)[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb5-42" data-line-number="42">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(speed_dating)){</a>
+<a class="sourceLine" id="cb5-43" data-line-number="43">    pid =<span class="st"> </span>speed_dating[i, <span class="st">&#39;pid&#39;</span>]</a>
+<a class="sourceLine" id="cb5-44" data-line-number="44">    tmp[i,<span class="dv">1</span>] &lt;-<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], x]</a>
+<a class="sourceLine" id="cb5-45" data-line-number="45">  }</a>
+<a class="sourceLine" id="cb5-46" data-line-number="46">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(speed_dating)) {</a>
+<a class="sourceLine" id="cb5-47" data-line-number="47">    result[i,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>((tmp[i,<span class="dv">1</span>] <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating[i,x]<span class="op">&gt;=</span><span class="dv">7</span>), <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb5-48" data-line-number="48">  }</a>
+<a class="sourceLine" id="cb5-49" data-line-number="49">  <span class="kw">return</span>(result)</a>
+<a class="sourceLine" id="cb5-50" data-line-number="50">}</a>
+<a class="sourceLine" id="cb5-51" data-line-number="51"><span class="co"># append the newly added columns to the original data frame</span></a>
+<a class="sourceLine" id="cb5-52" data-line-number="52">names =<span class="st"> </span><span class="kw">colnames</span>(speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sports<span class="op">:</span>yoga))</a>
+<a class="sourceLine" id="cb5-53" data-line-number="53">common_features &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">do.call</span>(cbind,<span class="kw">lapply</span>(names, f)))</a>
+<a class="sourceLine" id="cb5-54" data-line-number="54"><span class="kw">colnames</span>(common_features)&lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;same&#39;</span>,<span class="kw">colnames</span>(speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sports<span class="op">:</span>yoga)))</a>
+<a class="sourceLine" id="cb5-55" data-line-number="55">speed_dating &lt;-<span class="st"> </span><span class="kw">cbind</span>(speed_dating, common_features)</a>
+<a class="sourceLine" id="cb5-56" data-line-number="56">speed_dating &lt;-<span class="st"> </span>speed_dating[, <span class="op">!</span><span class="kw">duplicated</span>(<span class="kw">colnames</span>(speed_dating))]</a>
+<a class="sourceLine" id="cb5-57" data-line-number="57"></a>
+<a class="sourceLine" id="cb5-58" data-line-number="58"><span class="co"># drop unecessary columns and missing data</span></a>
+<a class="sourceLine" id="cb5-59" data-line-number="59">drops =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;plocation&#39;</span>, <span class="st">&#39;pfield&#39;</span>)</a>
+<a class="sourceLine" id="cb5-60" data-line-number="60">keeps =<span class="st"> </span><span class="kw">append</span>(<span class="kw">colnames</span>(speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sports<span class="op">:</span>yoga)), <span class="kw">c</span>(<span class="st">&#39;samelocation&#39;</span>, <span class="st">&#39;samefield&#39;</span>))</a>
+<a class="sourceLine" id="cb5-61" data-line-number="61">speed_dating &lt;-<span class="st"> </span>speed_dating[<span class="kw">complete.cases</span>(speed_dating[,keeps]), ]</a></code></pre></div>
 
 </div>
             </section>
