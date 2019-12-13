@@ -243,6 +243,5 @@ cat(
 
 
 
-
-
-*For sports, reading and movies, both participant and his/her partner having an interest of at least 7 (from a scale of 1 to 10) is considered sharing the feature.
+* Made using D3
+* For sports, reading and movies, both participant and his/her partner having an interest of at least 7 (from a scale of 1 to 10) is considered sharing the feature.
