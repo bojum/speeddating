@@ -1,16 +1,20 @@
 # Data sources
 
-The dataset for our project is `speed dating` dataset provided by Anna Montoya. It is publicly available on [Data.com](https://data.world/annavmontoya/speed-dating-experiment) as an excel file. 
+The dataset for our project is `speed dating` dataset provided by Anna Montoya. It is publicly available on [Data.com] as an [excel file](https://data.world/annavmontoya/speed-dating-experiment). 
 
-The data contains information about match and questionnaire from a speed dating experiment in 2002-2004 that was run by professors Ray Fisman and Sheena Iyengar from Columbia Business School. The primamry purpose of the collection was for their paper [Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment](https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf). 
+The data contains information about questionnaires filled out before and during a speed dating experiment in 2002-2004, which was run by professor Ray Fisman and Sheena Iyengar from Columbia Business School. The primary purpose of the experiment was discussed in their paper [Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment](https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf). 
 
 ## Experimental Design
 
-The experiment is design based on *Speed Dating* which is an event where participants have a four-minute conversation and decide if they want to meet each other again. They will get the other's contact information only if both parties "accept".
+The experiment design was based on the format of a *Speed Dating* event, where male participants and female participants have a one-to-one four-minute conversation and decide if they want to meet each other again. They will get the other's contact information only if both parties "accept". Each participant will meet a large number of participants of opposite sex during the experiment.
 
-Subjects in the experiments were students in graduate and professional school at Columbia University during the time of the experiment. They learned about the event through mass e-mail and fliers on distributed on campus. They had to sign up for the event by providing the experimentors with their names and email addresses and completing a pre-event survey ononline website. 
+Subjects in this experiments were students in graduate and professional school at Columbia University during the time of the experiment. They learned about the event through mass e-mail and fliers on distributed on campus. They had to sign up for the event by providing their names and email addresses and completing a pre-event survey on website, which requires the following information:
 
-There were 20 sessions of the experiment, all of which had the same setting. All participants were randomly assigned to one of the sessions. On the session day, participants who are unawared of the total number of participants on that day had to fill in a scorecard that contains 
+* Gender, Location, Income, Age, etc.
+* Their interests in 17 hobbies listed to them
+* Their self evaluation
+
+There were 20 sessions of the experiment, all of which had the same setting. All participants were randomly assigned to one of the sessions. On the session day, participants who are unawared of the total number of participants on that day had to fill in a scorecard that contains:
 
 * Spaces to write the ID number of each person they met
 * Yes/No whether a subject wants to meet the person again
