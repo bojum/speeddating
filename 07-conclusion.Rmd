@@ -1,2 +1,20 @@
 # Conclusion
 
+limitations
+1. old dataset to make a generalization for nowadays
+2. only binary pairs in 2002-2004 b/c of old experiment
+3. questionaire is subjective. Bias introduced during the fillout
+4. no statistical tests have been done so the conclusion may not be valid
+5. sample set is not a good rep for pop
+
+Future direction
+1. Study a similar dataset from the present time to see if the trend changes.
+2. more study on how a person's expectation in his/her partner changes after dating/mathcing 
+3. more study on factors other than what has been explored (attribute scores, shared interest, gender). Something that is uneasily quantified.  
+4. Add more interactive components to engage audience
+
+Lesson learned
+1. Coding in d3 takes a lot of time than we expected
+2. GitHub workflow can be improved
+3. Choosing appropriate forms of graphs is critical. Findings varies or may be unnoticeable.
+4. Help document and online resources are very important and helpful to our project. E.g. there are many ways to visualize missing value pattern. Packages bahave differently and we need to pick the right one for our project. e.g. mi can produce nice plots but it is not suitable for our project.  
