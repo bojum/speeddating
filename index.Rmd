@@ -18,6 +18,7 @@ library(tidyverse)
 bookdown::render_book("index.Rmd")
 browseURL("docs/index.html")
 ```
+
 ## Introduction
 
 What is love at first sight? Imagine meeting a girl or a guy that you really like, and you want to make a better impression. How should you act out? How do you know if you are a good match for him/her? This project will help you understand what are the important factors that will help you make a better impression. 
