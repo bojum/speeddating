@@ -70,7 +70,7 @@ It is widely believed that confident people preform better in various tasks incl
 Given the dataset, we define confidence, or excess self-esteem, as how much higher a subject evaluates itself than other people rate the subject (`peer score`). That is, the varaible excess self-esteem is calculated by subtracting an averaged evaluation score given by others from the score given to self. A large positive difference indicates highly excess self-esteem. A large negative difference suggests very low self-esteem. The variable is called `self-esteem` in the analysis and `peer score` is an average score a subject received from other people.
 
 
-![http://images.lipy.com/women-vs-men](data/3_self_esteem.jpg)
+![http://images.lipy.com/women-vs-men](img/3_self_esteem.jpg)
 
 One distinct characteristics of participants is gender. However, the previous question found no difference between genders. Moreover, this characteristics does not distinquish subjects in terms of their excess self-esteem. Below are distribution of score difference for each gender in each attribute. Their distribution are similar, peaking at around 1 with almost identical spread. 
 
