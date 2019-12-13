@@ -1,9 +1,8 @@
 # Interactive component
 
-
 The following interactive component compares the proportion of matches based on whether the participant and partner share the listed feature*. This graph is also available in section 5.
 
-Most variables do not have an impact on the chance of matching whether they share this feature or not. In fact, sharing the hobby of watching movies negatively impacts the chance of matching, potentially due to the fact that male participants having watching movies as a hobby indicates that his work is not as demanding, or that he is not ambitious with his career. However, one feature almost double the rate of matching (although with a very small sample size). Click and find out!
+Most variables do not have an impact on the chance of matching no matter whether they share this feature or not. In fact, sharing the hobby of watching movies negatively impacts the chance of matching, which is potentially due to the fact that male participants having watching movies as a hobby indicates that his work is not demanding, or that he is not ambitious with his career. However, one feature almost double the rate of matching (although with a very small sample size). Click and find out!
 
 ```{r}
 #save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
