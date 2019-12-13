@@ -125,7 +125,7 @@ ggplot(diff_df %>% filter(attr == "attr") %>%
   geom_point() + 
   xlab("Peer Score") + 
   ylab("Interest Proportion")+
-  labs(color = "Self Esteem", title = "Higher Self Esteem will Result in Less Likes")+
+  labs(color = "Self Esteem", title = "Higher Self Esteem will Result in Less Interest")+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
@@ -150,6 +150,8 @@ pl1 <- ggplot(diff_df %>% filter(attr == "attr") %>%
   geom_col() + coord_flip() + 
   xlab("") + 
   ylab("count")  +
+  ggtitle("The Number of Students by Race") + 
+  scale_fill_viridis_d() + 
   theme(legend.position = "none")
 
 pl2 <- ggplot(diff_df %>% filter(attr == "attr") %>%
@@ -157,7 +159,9 @@ pl2 <- ggplot(diff_df %>% filter(attr == "attr") %>%
          aes(x=peer_score, y = proportion, color = race)) + 
   geom_point(alpha = 1) +
   xlab("Peer Score for Attractive") + 
-  ylab("Interest Proportion")  
+  ylab("Interest Proportion") +
+  ggtitle("Race has no Effect on Interest Proportion\nand Attractive Score") +
+  scale_color_viridis_d()
 
 ggplotly(pl1, tooltip = c("cnt"))
 ggplotly(pl2, tooltip = c("race"))
@@ -181,21 +185,25 @@ pl1 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cd)) %>%
          select(iid, field_cd) %>% 
          group_by(field_cd) %>%
          summarize(cnt = n()) %>%
-         mutate(field_cd = field_list[field_cd]), 
-         aes(x = fct_reorder(field_cd, cnt), y = cnt, fill = field_cd)) + 
+         mutate(study_field = field_list[field_cd]), 
+         aes(x = fct_reorder(study_field, cnt), y = cnt, fill = study_field)) + 
   geom_col() + coord_flip() + 
   xlab("") + 
   ylab("count") +
+  ggtitle("The Number of Students by Study Field") + 
+  scale_fill_viridis_d()+
   theme(legend.position = "none")
 
 ## field X
 pl2 <- ggplot(diff_df %>% 
                 filter(attr == "attr", !is.na(field_cd)) %>%
-         mutate(field_cd = field_list[field_cd]), 
-         aes(x=peer_score, y = proportion, color = field_cd)) + 
+         mutate(study_field = field_list[field_cd]), 
+         aes(x=peer_score, y = proportion, color = study_field)) + 
   geom_point(alpha = 1) +
   xlab("Attractive Peer Score") + 
-  ylab("Interest Proportion")
+  ylab("Interest Proportion") + 
+  ggtitle("Field of Study has no effect on\nInterest Proportion and Attractive Score") +
+  scale_color_viridis_d()
 
 ggplotly(pl1, tooltip = c("cnt"))
 ggplotly(pl2, tooltip = c("field_cd"))
@@ -215,7 +223,7 @@ diff_df <- diff_df %>% mutate(field_cate_cd = cat_list[field_cd])
 
 In addition to considering individual majors, we create major categories to see any general pattern that involves in school majors. 
 
-```{r}
+```{r, fig.width = 8}
 pl1 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)) %>%  
          select(iid, field_cate_cd)%>% 
          group_by(field_cate_cd) %>%
@@ -224,22 +232,25 @@ pl1 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)) %>%
   geom_col() + 
   coord_flip() + 
   xlab("") + 
-  ylab("count") +
-  scale_color_colorblind() + 
+  ylab("count")  + 
+  ggtitle("The Number of Students by Field Category") +
+  scale_fill_viridis_d() + 
   theme(legend.position = "none")+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 
-pl2 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)), 
-       aes(x=peer_score, y = proportion, color = field_cate_cd)) + 
+pl2 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)) %>% mutate(field_category = field_cate_cd), 
+       aes(x=peer_score, y = proportion, color = field_category)) + 
   geom_point(alpha = 1) + 
   xlab("Attractive Peer Score") + 
   ylab("Interest Proportion") + 
-  scale_color_colorblind()+theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+  ggtitle("Field Category has no effect on\nInterest Proportion and Attractive Score") +
+  scale_color_viridis_d()+theme( axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 
 ggplotly(pl1, tooltip = c("cnt"))
-ggplotly(pl2, tooltip = c("field_cate_cd"))
+ggplotly(pl2, tooltip = c("field_category"))
+#grid.arrange(pl1, pl2, ncol = 2)
 
-#subplot(ggplotly(pl1, tooltip = c("cnt")), ggplotly(pl2, tooltip = c("field_cate_cd")), nrows=1)
+#subplot(ggplotly(pl1, tooltip = c("cnt")), ggplotly(pl2, tooltip = c("field_category")), nrows=1)
 ```
 
 There is also no pattern among `proportion`, `peer_score`, and study `field`.

@@ -198,7 +198,8 @@ gender_exp_bar %>%
   geom_bar(stat = "identity")+
   # geom_point()+
   facet_grid(gender_exp_bar$gender~gender_exp_bar$match)+
-  labs(fill = "Attributes",title = "Expectaion to Partners (by Gender and Match)")+
+  labs(fill = "Attributes",title = "Expectaion to Partners (by Gender and Match)", x = "Attribute", y="Change")+
+  scale_fill_viridis_d()+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
 ```
 
