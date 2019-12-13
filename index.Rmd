@@ -27,11 +27,11 @@ bookdown::render_book("index.Rmd")
 browseURL("docs/index.html")
 ```
 
-## Introduction {-#i}
+## Introduction
 
 What is love at first sight? Imagine meeting a girl or a guy that you really like, and you want to make a better impression. How should you act out? How do you know if you are a good match for him/her? This project will help you understand what are the important factors that will help you make a better impression. 
 
-## Background {-#i}
+## Background
 
 We use experimental Speed Dating data collected by Columbia Business schooll as a foundation to the analyses in this project. 
 
@@ -39,10 +39,10 @@ Being popular since 1970s, speed dating is a formalized matchmaking process whic
 
 For research purposes, participants in our data were asked to fill out several forms before and during the speed dating process. Our findings are based on such data. 
 
-## Our Goal {-#i}
+## Our Goal
 
 In this project, we explore what factors that influence the chances of getting a “match.” For example, will having a same hobby with your partner increase your chances? Or should you behave as confident you can to leave a better impression? If not, what things or factors are your partner looking for? We derive our focus on the factors that you can control.
 
-## Project Overview {-#i}
+## Project Overview
 
 In section 2, we give an overview of our data, where it was from and what issues it may have. Then in section 3 & 4, we describe our data cleaning/transformation process and patterns for missing values. In section 5, we provide our analyses and interesting findings, and the answers to those questions above will be in this section as well. In section 6, we include interative components of the analyses, where you can interact with the graphs and explore interesting findings on your own. We include our conclusions to this project in section 7. 
