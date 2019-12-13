@@ -1,4 +1,4 @@
-## Do People with Excess Self-esteem Get More Romantic Interest?
+## Do People with Excess Self-Esteem Get More Romantic Interest?
 
 ```{r, echo = FALSE}
 
@@ -83,7 +83,9 @@ ggplot(eval_df %>% mutate(gender = ifelse(gender == 0, "Female", "Male"),
   geom_density(alpha = 0.5) + 
   ggtitle("Histogram of Evaluation Ratio") + 
   xlab("Ratio") + 
-  facet_grid(~attr)
+  ylab("Density")+
+  labs(fill = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
 When `self-esteem` is plotted against the proportion of people who want to meet with a subject again, referred to as `interest proportion`, the only small difference between gender is that female participants tend to get higher interest proportion than male participants. This is shown by more red dots locating at the top and more blue dots at the bottom of the graph. However, dots at the top and the bottom constitute only a small number of participants. Therefore, this analysis treat both genders collectively. 
@@ -94,7 +96,8 @@ ggplot(diff_df, aes(x=diff_before, y = proportion, color = gender)) +
   geom_point(alpha = 0.5) + 
   facet_grid(~attr) + 
   xlab("Self Esteem") + 
-  ylab("Interest Proportion")
+  ylab("Interest Proportion")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
 The plots above also suggest that people with excess self-esteem generally have low interest proportion. The correlation is stronger in fun and attractive, with the most negative correlation in attractive. That is, a participant with lower self-esteem in his/her own attractive and fun tend to get more romatic interest from the others. 
@@ -121,7 +124,9 @@ ggplot(diff_df %>% filter(attr == "attr") %>%
        aes(x=peer_score , y =  proportion, color = self_esteem)) + 
   geom_point() + 
   xlab("Peer Score") + 
-  ylab("Interest Proportion")
+  ylab("Interest Proportion")+
+  labs(color = "Self Esteem", title = "Higher Self Esteem will Result in Less Likes")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
 The plot shows a linear relationship between peer evaluation score and interest proportion. A person who, othter people think, is attractive gain more romantic interest proportion, especially when average score is below 5. The linear relationship becomes weaker for those with score larger than 6.
@@ -221,14 +226,15 @@ pl1 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)) %>%
   xlab("") + 
   ylab("count") +
   scale_color_colorblind() + 
-  theme(legend.position = "none")
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 
 pl2 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)), 
        aes(x=peer_score, y = proportion, color = field_cate_cd)) + 
   geom_point(alpha = 1) + 
   xlab("Attractive Peer Score") + 
   ylab("Interest Proportion") + 
-  scale_color_colorblind()
+  scale_color_colorblind()+theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 
 ggplotly(pl1, tooltip = c("cnt"))
 ggplotly(pl2, tooltip = c("field_cate_cd"))
