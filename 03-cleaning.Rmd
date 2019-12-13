@@ -7,13 +7,13 @@ The script file that we used to clean and transform the dataset can be found [he
 
 ## Filter
 
-First, out of the 195 variables (columns), we only keep 70 of them using dplyr::select function. Those 70 variables include their basic information(id, gender, age, race...), their self evaluation scores, their interests in listed hobbies, and the evalution scores they received from partners (partipants of opposite sex).
+First, out of the 195 variables (columns), we only keep 70 of them using dplyr::select function. Those 70 variables include their basic information (id, gender, age, race...), their self-evaluation scores, their interests in listed hobbies, and the evalution scores they received from partners (partipants of opposite sex).
 
 ## Transformation
 
-Next, we want to know whether each participant's partner's share common interests in listed hobbies as the participant, and have this data available in respective indicator columns. However partner's data is not available as variables in the same row as the participant. Luckily, for each entry in the data, the partner's interests in listed hobbies can be found under partner's entry (a different row). So in order to do this, we'd have to look up participant's partner's hobby-data in a different row using partner's id. We then check whether both participant and partner's in each hobby is at least 7 (on a scale from 1 t 10), if so, we enter "Yes" to the indicator column of this hobby, else no. This process is done using do.call, cbind, and lapply.
+Next, we want to know whether each participant's partner share common interests in listed hobbies as the participant, and have this data available in respective indicator columns. However, partner's data is not available as variables in the same row as the participant. Luckily, for each entry in the data, the partner's interests in listed hobbies can be found under partner's entry (a different row). So in order to do this, we'd have to look up participant's partner's hobby-data in a different row using partner's id. We then check whether both participant and partner in each hobby is at least 7 (on a scale from 1 t 10), if so, we enter "Yes" to the indicator column of this hobby, else no. This process is done using do.call, cbind, and lapply.
 
-We do the same for participants basic information, but due to the complexity of the naming of those variables, it is done using a for loop instead of using do.call, cbind, and lapply.
+We do the same for participants basic information. But due to the complexity of the naming of those variables, it is done using a for loop instead of using do.call, cbind, and lapply.
 
 ```{r, eval = FALSE, echo=FALSE}
 
