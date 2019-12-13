@@ -1,12 +1,6 @@
-## Question: Will backrgound and common interests influence the match? Which feature is the most influential?
+## Will Backrgound and Common Interests Influence the Match? Which Feature is the Most Influential?
 
-
-
-To answer this question, we have to look at background and common interests seperately. Background includes three features: `race`, `from`, and `field`. We can do so by comparing the chance of matching by conditioning on whether they are from the same `race`, same `from` (location), and same `field`. 
-
-Data Cleaning:
-
-we would like to append 6 indicator columns that indicates whether this person and his/her partner share that feature in common (actually 5 because samerace is available in the original data). 
+The following interactive component compares the proportion of matches based on whether the participant and partner share the listed feature*. This graph is also available in section 6.
 
 
 ```{r}
@@ -245,7 +239,10 @@ cat(
   }
 </script>
 
-We then look at all the available features that could be of common interest in the dataset, and see if any of those features heavily impacts the chances of getting matched.
+Most variables do not have an impact on the chance of matching whether they share this feature or not. In fact, sharing the hobby of watching movies negatively impacts the chance of matching, potentially due to the fact that male participants having watching movies as a hobby indicates that his work is not as demanding, or that he is not ambitious with his career. However, if a participant and partner are both from the same location, their chance of matching almost double the rate of matching (although with a very small sample size). This is probably because their cost of relocation is minimized if they were to move forward with their relationship. Plus, they will also have a lot of common topics to talk about, which could drastically help feel like they are from the same community.
+
+
+We then look at all the available hobbies that could be of common interest in the dataset, and see if any of those features heavily impacts the chances of getting matched. They following graph demonstrates the chance of matching depending on whether both participants share the same hobby or not. 
 
 ```{r}
 calc_diff <- function(y){
@@ -266,3 +263,6 @@ ggplot(cd_df,aes(x=Freq,y=fct_reorder2(hobby, share_hobby == 'Yes',Freq, .desc=F
            legend.text = element_text(size=14))
 ```
 
+As we can see from the graph, yoga and clubbing are both crucial factors that could swing the chance of getting matched to your favor. Considering those are nitch hobbies, it makes sense that the rarity of finding someone with the same interest raises your interest for your partner. Even if they are not interested in dating, there is a possibility that they could be asnwering yes to exchange contact information just to be normal friends.
+
+On the other hand, we can see that hobbies such as gaming, tvsports, shopping and movies can be considered a negative factor. As those hobbies are less likely to yield positive impact in one's career and financial situations, which could be an important factor. So even if you are fan of those hobbies, it is best not to mention it during first dates. 
