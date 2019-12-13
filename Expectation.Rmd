@@ -19,7 +19,9 @@ speed_dating %>% select(iid,goal) %>%
   geom_bar(stat = "identity")+
   scale_fill_manual(values = c("grey50","lightblue"))+
   labs(x="goal",title = "The Reason People Participate the Experiment")+
-  theme(legend.position = "none")
+  xlab("Goal")+
+  ylab("Frequency")+
+  theme(legend.position = "none")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14))
 ```
 
 We define expectation as how people weight the importance of some attributes of their partners, and define self-evaluation of how people score their performance on those attributes. In this experiment people were asked their opinions about six attributes, which we descibed in section 2.2, to represent their expectation and five attributes to represent their self-evaluation ("share hobby" is dropped).
@@ -73,7 +75,10 @@ gender_exp_bar %>%
   ggplot(aes(x=gender,y=weight,fill=reorder(attribute,-weight)))+
   geom_bar(position="stack", stat="identity")+
   facet_wrap(gender_exp_bar$time)+
-  labs(fill = "Attributes",title = "Expectaion to Partners (by Gender)")
+  labs(fill = "Attributes",title = "Expectaion to Partners (by Gender)")+
+  xlab("Gender")+
+  ylab("Weight")+
+  theme(legend.position = "none")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14))
 ```
 
 By analyzing the expectation before and after the dating by gender, we found:
@@ -129,9 +134,11 @@ gender_exp_bar %>%
   ggplot(aes(x=time,y=weight,color=gender,group=gender))+
   geom_line()+
   geom_point()+
+  xlab("Time")+
+  ylab("Weight")+
   facet_wrap(gender_exp_bar$attribute)+
   labs(color = "Attributes",title = "Expectaion to Partners (by Gender)")+
-  theme(axis.text.x = element_text(angle=30,hjust = 1))
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
 ```
 
 
@@ -191,8 +198,8 @@ gender_exp_bar %>%
   geom_bar(stat = "identity")+
   # geom_point()+
   facet_grid(gender_exp_bar$gender~gender_exp_bar$match)+
-  labs(color = "Attributes",title = "Expectaion to Partners (by Gender and Match)")+
-  theme(axis.text.x = element_text(angle=30,hjust = 1))
+  labs(fill = "Attributes",title = "Expectaion to Partners (by Gender and Match)")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
 ```
 
 There is no obvious difference between the expections of matched group and unmatched groups, which means whether people are on a dating or not does not influence their expections to their partners (if they are not dating secretly or with another person except for the one they meet in this event).
@@ -251,7 +258,10 @@ tmp %>%
        title = "Self-evaluation Changes (by Gender)",
        y="frequency")+
   theme(axis.text.x = element_text(angle = 30, hjust = 1),legend.position="bottom")+
-  coord_flip()
+  coord_flip()+
+  xlab("Frenquency")+
+  ylab("Change")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
 
 ```
 
@@ -311,7 +321,10 @@ tmp %>%
        title = "Self-evaluation Changes (by Gender)",
        y="frequency")+
   theme(legend.position="bottom")+
-  coord_flip()
+  coord_flip()+
+  xlab("Frequency")+
+  ylab("Change")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 
 ```
 
@@ -358,10 +371,12 @@ tmp %>%
   scale_y_continuous(breaks = breaks_values,
                      labels = abs(breaks_values))+
   scale_fill_discrete(name="decision")+
-  labs(title = "Does people date with higher score people?",
-       y="frequency")+
+  labs(title = "Does People Date with Higher Score People?", fill = "Decision")+
   theme(legend.position="bottom")+
-  coord_flip()
+  coord_flip()+
+  xlab("Frequency")+
+  ylab("Score")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
 If people made their decisions based on the score they gave, for people they said "yes", the score for them should be higher than for those they said "no". But according to the graph, there is no difference between the distribution of the score between "yes" and "no" groups, even if we seperate people by their goal of participating the event excpet for the female groups whose goal is dating. In the female groups whose goal is dating, they tent to date with people who had higher scores.
@@ -394,13 +409,15 @@ p1 <- tmp[!is.na(tmp$yn_ratio),] %>%
   geom_line()+
   geom_point()+
   scale_x_continuous(breaks = seq(0,10,2))+
-  labs(x="like",y="yes-no ratio of decisions")
+  labs(x="Like",y="Yes-No Ratio of Decisions", color = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 p2 <- tmp[!is.na(tmp$yn_ratio),] %>% 
   ggplot(aes(x=like,y=Yes+No,fill=gender))+
   geom_bar(stat="identity",position="dodge")+
   scale_x_continuous(breaks = seq(0,10,2))+
-  labs(x="like",y="frequency")
-gridExtra::grid.arrange(p1,p2,nrow=1,top="Likes Does not Influence Decisions")
+  labs(x="Like",y="Frequency", fill = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+gridExtra::grid.arrange(p1,p2,nrow=1,top="Likes Do not Influence Decisions")
 
 
 tmp <- gender_mat %>% mutate(prob=round(prob)) %>% 
@@ -414,12 +431,14 @@ p3 <- tmp[!is.na(tmp$yn_ratio),] %>%
   geom_line()+
   geom_point()+
   scale_x_continuous(breaks = seq(0,10,2))+
-  labs(x="probability of being chosen",y="yes-no ratio of decisions")
+  labs(x="Probability of Being chosen",y="Yes-No Ratio of Decisions", color = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 p4 <- tmp[!is.na(tmp$yn_ratio),] %>% 
   ggplot(aes(x=prob,y=Yes+No,fill=gender))+
   geom_bar(stat="identity",position="dodge")+
   scale_x_continuous(breaks = seq(0,10,2))+
-  labs(x="probability of being chosen",y="frequency")
+  labs(x="Probability of Being Chosen",y="Frequency", fill = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 gridExtra::grid.arrange(p3,p4,nrow=1,top="Others' Opinions Influence Decisions")
 
 ```
