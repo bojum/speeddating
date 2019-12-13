@@ -2,23 +2,22 @@
 
 ## Limitations
 
-There are several issues with the dataset. First, one part of the dataset is a questionaire about subjective matters. This potentially introduces bias to the dataset and invalidates the results. Second, the dataset, although very interesting, is almost 20 years old. Relationships among variables have have changed over the years. Third, there is an obvious selection bias in during the process of data collecting. Only students are included in the experiment. Outgoing people are more likely to participate. Moreover, the setting that only pairs female and male students together excludes a large group of people who do not identify themselves as any binary genders. As a result, what we find in the analyses may not be applicable to nowadays. 
+There are several issues with the dataset that we use. First, a part of the dataset is a questionaire about subjective matters. For instance, two people do not rate the same level of attractive with the same score. This potentially introduces bias to the dataset and invalidates the results. Second, the dataset, although very interesting, is almost 20 years old. Relationships among variables may have changed over the years. Besides, there is an obvious selection bias during the process of data collecting. Only students are included in the experiment. Outgoing people are more likely to participate. Moreover, the setting that only pairs female and male students together excludes a large group of people who do not identify themselves as any binary genders. As a result, what we find in the analyses may not be applicable to nowadays. 
 
 ## Future Directions
 
-The current findings in the analyses 
-The first next step we would like to do is to conduct statistical tests to verify some conclusions we found. 
+The first next step would be to include more interactive components to the analysis to hilight the findings and engage readers. 
 
-As mentioned in limitations section that things change over time, if we could gather a similar set of data from the present time, we would like to run the same study on it and compare changes in trends.
+Some current findings in the analyses are not evident enough. This suggests that there may be more factors that we should explore. Based on our results, any appearance features, such as the way participants talk and walk or their poses, are good candidates although these are not easily quantified. If possible, we also would like to conduct statistical tests to verify conclusions we found. 
 
-1. Study a similar dataset from the present time to see if the trend changes.
-2. more study on how a person's expectation in his/her partner changes after dating/mathcing 
-3. more study on factors other than what has been explored (attribute scores, shared interest, gender). Something that is uneasily quantified.  
-4. Add more interactive components to engage audience
-no statistical tests have been done so the conclusion may not be valid
+As mentioned in limitations section that things change over time, we find that this is a good topic that we can extend our project towards. If we could gather a similar set of data from the present time, we would like to run the same study on it and compare changes in trends.
 
-Lesson learned
-1. Coding in d3 takes a lot of time than we expected
-2. GitHub workflow can be improved
+## Lesson Learned
+
+There are a lot we have learned from working on this project. We are aware that interactive part is very important to engage readers. However, to create an interactive graph that can appropriately demonstrate out intent using D3 takes a lot longer time than we expect. Some of the graphs were dropped from the final version because we find static versions better suited out purpose. 
+
+GitHub can be a very useful resource when working collaboratively, but at the same time, it can cause a number of issues that require us some times to fix. We had to overwrite the entire remote master branch to get over some problems.
+
+
 3. Choosing appropriate forms of graphs is critical. Findings varies or may be unnoticeable.
 4. Help document and online resources are very important and helpful to our project. E.g. there are many ways to visualize missing value pattern. Packages bahave differently and we need to pick the right one for our project. e.g. mi can produce nice plots but it is not suitable for our project.  
