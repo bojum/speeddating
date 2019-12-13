@@ -1,4 +1,4 @@
-## Q2: How males and females' expectation and self-evaluation differs? {-#i}
+## Question: How males and females' expectation and self-evaluation differs?
 
 From the plot we found that only a small proportion of people participate in the experiment for dating, which meant they may not treat the dating seriously and just choose their partners randomly. So in this section, we explored whether people really chose to date with someone that meet their expectation, or they made their decision basing on other factors, and is there a difference between male and female. Another thing we were interested in is would males and females' self-evaluation be influenced after they dating with someone.
 
