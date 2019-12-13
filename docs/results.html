@@ -21,7 +21,7 @@
   
   
 
-<meta name="author" content="Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)" />
+<meta name="author" content="Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Zhi Qi (zq2175)" />
 
 
 <meta name="date" content="2019-12-12" />
@@ -139,7 +139,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Dating 101</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#background"><i class="fa fa-check"></i><b>1.2</b> Background</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#our-goal"><i class="fa fa-check"></i><b>1.3</b> Our Goal</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#project-overview"><i class="fa fa-check"></i><b>1.4</b> Project Overview</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a><ul>
 <li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#experimental-design"><i class="fa fa-check"></i><b>2.1</b> Experimental Design</a></li>
 <li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#data-description"><i class="fa fa-check"></i><b>2.2</b> Data Description</a></li>
@@ -186,6 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To answer this question, we have to look at background and common interests seperately. Background includes three features: <code>race</code>, <code>from</code>, and <code>field</code>. We can do so by comparing the chance of matching by conditioning on whether they are from the same <code>race</code>, same <code>from</code> (location), and same <code>field</code>.</p>
 <p>Data Cleaning:</p>
 <p>we would like to append 6 indicator columns that indicates whether this person and his/her partner share that feature in common (actually 5 because samerace is available in the original data).</p>
+<<<<<<< HEAD
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">library</span>(vcd)</a></code></pre></div>
@@ -268,13 +274,91 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##     var samereadingdata = [{&quot;samereading&quot;:&quot;No&quot;,&quot;match&quot;:&quot;No&quot;,&quot;Freq&quot;:2408},{&quot;samereading&quot;:&quot;No&quot;,&quot;match&quot;:&quot;Yes&quot;,&quot;Freq&quot;:424},{&quot;samereading&quot;:&quot;Yes&quot;,&quot;match&quot;:&quot;No&quot;,&quot;Freq&quot;:3154},{&quot;samereading&quot;:&quot;Yes&quot;,&quot;match&quot;:&quot;Yes&quot;,&quot;Freq&quot;:672}];
 ##     var samemoviesdata = [{&quot;samemovies&quot;:&quot;No&quot;,&quot;match&quot;:&quot;No&quot;,&quot;Freq&quot;:1570},{&quot;samemovies&quot;:&quot;No&quot;,&quot;match&quot;:&quot;Yes&quot;,&quot;Freq&quot;:344},{&quot;samemovies&quot;:&quot;Yes&quot;,&quot;match&quot;:&quot;No&quot;,&quot;Freq&quot;:3992},{&quot;samemovies&quot;:&quot;Yes&quot;,&quot;match&quot;:&quot;Yes&quot;,&quot;Freq&quot;:752}];
 ##   &lt;/script&gt;</code></pre>
+=======
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">library</span>(vcd)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw">library</span>(jsonlite)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">load</span>(<span class="st">&#39;data/speed_dating.RData&#39;</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># get feature values of the partner</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(speed_dating)) {</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="co"># for each row, get partner&#39;s id</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">  pid =<span class="st"> </span>speed_dating[i, <span class="st">&#39;pid&#39;</span>]</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="co"># add temporary columns that holds partner&#39;s location, field, sports, reading, movies</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">  speed_dating[i, <span class="st">&#39;plocation&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;from&#39;</span>]</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">  speed_dating[i, <span class="st">&#39;pfield&#39;</span>] =<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], <span class="st">&#39;field&#39;</span>]</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># append indicator columns for location, field, and income</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">speed_dating[<span class="st">&#39;samelocation&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>from <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>plocation, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">speed_dating[<span class="st">&#39;samefield&#39;</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>(speed_dating<span class="op">$</span>field <span class="op">==</span><span class="st"> </span>speed_dating<span class="op">$</span>pfield, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># get the feature values of all the hobbies of the partner</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16">f &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">  tmp &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;holder&quot;</span> =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(speed_dating)[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">  result &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;holder&quot;</span> =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">dim</span>(speed_dating)[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb5-19" data-line-number="19">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(speed_dating)){</a>
+<a class="sourceLine" id="cb5-20" data-line-number="20">    pid =<span class="st"> </span>speed_dating[i, <span class="st">&#39;pid&#39;</span>]</a>
+<a class="sourceLine" id="cb5-21" data-line-number="21">    tmp[i,<span class="dv">1</span>] &lt;-<span class="st"> </span>speed_dating[<span class="kw">which</span>(speed_dating<span class="op">$</span>iid <span class="op">==</span><span class="st"> </span>pid)[<span class="dv">1</span>], x]</a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">  }</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(speed_dating)) {</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">    result[i,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">if_else</span>((tmp[i,<span class="dv">1</span>] <span class="op">&gt;=</span><span class="dv">7</span> <span class="op">&amp;</span><span class="st"> </span>speed_dating[i,x]<span class="op">&gt;=</span><span class="dv">7</span>), <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)</a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">  }</a>
+<a class="sourceLine" id="cb5-26" data-line-number="26">  <span class="kw">return</span>(result)</a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">}</a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co"># append the newly added columns to the original data frame</span></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29">names =<span class="st"> </span><span class="kw">colnames</span>(speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sports<span class="op">:</span>yoga))</a>
+<a class="sourceLine" id="cb5-30" data-line-number="30">common_features &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">do.call</span>(cbind,<span class="kw">lapply</span>(names, f)))</a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="kw">colnames</span>(common_features)&lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;same&#39;</span>,<span class="kw">colnames</span>(speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sports<span class="op">:</span>yoga)))</a>
+<a class="sourceLine" id="cb5-32" data-line-number="32">speed_dating &lt;-<span class="st"> </span><span class="kw">cbind</span>(speed_dating, common_features)</a>
+<a class="sourceLine" id="cb5-33" data-line-number="33">speed_dating &lt;-<span class="st"> </span>speed_dating[, <span class="op">!</span><span class="kw">duplicated</span>(<span class="kw">colnames</span>(speed_dating))]</a>
+<a class="sourceLine" id="cb5-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="co"># drop unecessary columns and missing data</span></a>
+<a class="sourceLine" id="cb5-36" data-line-number="36">drops =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;plocation&#39;</span>, <span class="st">&#39;pfield&#39;</span>)</a>
+<a class="sourceLine" id="cb5-37" data-line-number="37">speed_dating &lt;-<span class="st"> </span><span class="kw">select</span>(speed_dating, <span class="op">-</span>drops)</a>
+<a class="sourceLine" id="cb5-38" data-line-number="38">keeps =<span class="st"> </span><span class="kw">append</span>(<span class="kw">paste0</span>(<span class="st">&#39;same&#39;</span>,<span class="kw">colnames</span>(speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sports<span class="op">:</span>yoga))), <span class="kw">c</span>(<span class="st">&#39;samelocation&#39;</span>, <span class="st">&#39;samefield&#39;</span>))</a>
+<a class="sourceLine" id="cb5-39" data-line-number="39">speed_dating &lt;-<span class="st"> </span>speed_dating[<span class="kw">complete.cases</span>(speed_dating[,keeps]), ]</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">#save(speed_dating_q1, file = &quot;data/speed_dating_q1.Rdata&quot;)</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">load</span>(<span class="dt">file =</span> <span class="st">&quot;data/speed_dating_q1.Rdata&quot;</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">speed_dating &lt;-<span class="st"> </span>speed_dating_q1</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">names =<span class="st"> </span><span class="kw">colnames</span>(speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sports<span class="op">:</span>yoga))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># for mosaic plot </span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># create a clean dataframe for each common feature</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">sameracedata =<span class="st"> </span>speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(samerace, match) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">Freq =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">samerace =</span> <span class="kw">if_else</span>(samerace <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">match =</span> <span class="kw">if_else</span>(match <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">samelocationdata =<span class="st"> </span>speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(samelocation, match) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Freq =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">match =</span> <span class="kw">if_else</span>(match <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">samefielddata =<span class="st"> </span>speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(samefield, match) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Freq =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">match =</span> <span class="kw">if_else</span>(match <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">samesportsdata =<span class="st"> </span>speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(samesports, match) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Freq =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">match =</span> <span class="kw">if_else</span>(match <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">samereadingdata =<span class="st"> </span>speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(samereading, match) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Freq =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">match =</span> <span class="kw">if_else</span>(match <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">samemoviesdata =<span class="st"> </span>speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(samemovies, match) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Freq =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">match =</span> <span class="kw">if_else</span>(match <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="kw">cat</span>(</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">  <span class="kw">paste</span>(</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">  <span class="st">&#39;&lt;script&gt;</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="st">    var sameracedata = &#39;</span>,<span class="kw">toJSON</span>(sameracedata),<span class="st">&#39;;</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="st">    var samelocationdata = &#39;</span>,<span class="kw">toJSON</span>(samelocationdata),<span class="st">&#39;;</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="st">    var samefielddata = &#39;</span>,<span class="kw">toJSON</span>(samefielddata),<span class="st">&#39;;</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="st">    var samesportsdata = &#39;</span>,<span class="kw">toJSON</span>(samesportsdata),<span class="st">&#39;;</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="st">    var samereadingdata = &#39;</span>,<span class="kw">toJSON</span>(samereadingdata),<span class="st">&#39;;</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="st">    var samemoviesdata = &#39;</span>,<span class="kw">toJSON</span>(samemoviesdata),<span class="st">&#39;;</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="st">  &lt;/script&gt;&#39;</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20">  , <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">)</a></code></pre></div>
+<script>
+    var sameracedata = [{"samerace":"No","match":"No","Freq":3398},{"samerace":"No","match":"Yes","Freq":620},{"samerace":"Yes","match":"No","Freq":2164},{"samerace":"Yes","match":"Yes","Freq":476}];
+    var samelocationdata = [{"samelocation":"No","match":"No","Freq":5516},{"samelocation":"No","match":"Yes","Freq":1082},{"samelocation":"Yes","match":"No","Freq":46},{"samelocation":"Yes","match":"Yes","Freq":14}];
+    var samefielddata = [{"samefield":"No","match":"No","Freq":5460},{"samefield":"No","match":"Yes","Freq":1054},{"samefield":"Yes","match":"No","Freq":102},{"samefield":"Yes","match":"Yes","Freq":42}];
+    var samesportsdata = [{"samesports":"No","match":"No","Freq":4012},{"samesports":"No","match":"Yes","Freq":746},{"samesports":"Yes","match":"No","Freq":1550},{"samesports":"Yes","match":"Yes","Freq":350}];
+    var samereadingdata = [{"samereading":"No","match":"No","Freq":2408},{"samereading":"No","match":"Yes","Freq":424},{"samereading":"Yes","match":"No","Freq":3154},{"samereading":"Yes","match":"Yes","Freq":672}];
+    var samemoviesdata = [{"samemovies":"No","match":"No","Freq":1570},{"samemovies":"No","match":"Yes","Freq":344},{"samemovies":"Yes","match":"No","Freq":3992},{"samemovies":"Yes","match":"Yes","Freq":752}];
+  </script>
+>>>>>>> ef2a7eee1340762d1ab8e02daa07f097bb0fb3d0
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <svg width="910" height="550">
 </svg>
 <script>
   //initialize the svg
-  var w = 910;
-  var h = 550;
+  var w = 800;
+  var h = 500;
   var margin = {top: 25, right: 25, bottom: 25, left: 25};
   var innerWidth = w - margin.left - margin.right;
   var innerHeight = h - margin.top - margin.bottom;
@@ -301,8 +385,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   //manually transform to a mosaic plot
   function format(data){
     var offset = 50;
-    var plotwidth = 400;
-    var plotheight = 400;
+    var plotwidth = 350;
+    var plotheight = 350;
     var bar2_x = (data[0].Freq+data[1].Freq)/d3.sum(data.map(d => d.Freq))*(plotwidth-5);
     var bar1_y = data[0].Freq/(data[0].Freq+data[1].Freq)*plotheight;
     var bar2_y = data[2].Freq/(data[2].Freq+data[3].Freq)*plotheight;
@@ -333,7 +417,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   //add labels for axis
   svg.append("text")
       .attr("x", "50")
-      .attr("y", "300")
+      .attr("y", "250")
       .attr("font-size","20")
       .attr("text-anchor","middle")
       .attr("font-family","helvetica")
@@ -347,7 +431,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
                 .selectAll("text")
                   .data([dataset[0]], d=>d.key).enter()
                   .append("text")
-                  .attr("x", "330")
+                  .attr("x", "300")
                   .attr("y", "20")
                   .attr("font-size","20")
                   .attr("text-anchor","middle")
@@ -364,7 +448,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
                     .attr("transform",  `translate (${margin.left}, ${margin.top})`)
                   .selectAll("circle")
                     .data(dataset, d=>d.key).enter().append("circle")
-                    .attr("cx", "700")
+                    .attr("cx", "580")
                     .attr("cy", (d,i) => i*50+125)
                     .attr("r", "13")
                     .attr("fill", "aliceblue")
@@ -377,7 +461,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
                     .attr("transform",  `translate (${margin.left}, ${margin.top})`)
                   .selectAll("circle")
                     .data(dataset, d=>d.key).enter().append("circle")
-                    .attr("cx", "700")
+                    .attr("cx", "580")
                     .attr("cy", (d,i) => i*50+125)
                     .attr("r", "6")
                     .attr("fill", d => d.f)
@@ -402,7 +486,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
                 .attr("transform", `translate (${margin.left}, ${margin.top})`)
               .selectAll("text")
                 .data(dataset, d=>d.key).enter().append("text")
-                .attr("x", "730")
+                .attr("x", "610")
                 .attr("y", (d, i) => i*50+130)
                 .attr("fill", d=>d.tf)
                 .attr("font-size","20")
@@ -474,6 +558,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 </script>
 <p>We then look at all the available features that could be of common interest in the dataset, and see if any of those features heavily impacts the chances of getting matched.</p>
+<<<<<<< HEAD
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">calc_diff &lt;-<span class="st"> </span><span class="cf">function</span>(x){</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">  tmp &lt;-<span class="st"> </span>speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by_</span>(x, <span class="st">&#39;match&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Freq =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">match =</span> <span class="kw">if_else</span>(match <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</a>
 <a class="sourceLine" id="cb16-3" data-line-number="3">  no_rate &lt;-<span class="st"> </span>tmp[<span class="dv">2</span>,<span class="dv">3</span>]<span class="op">/</span>(tmp[<span class="dv">2</span>,<span class="dv">3</span>]<span class="op">+</span>tmp[<span class="dv">1</span>,<span class="dv">3</span>])</a>
@@ -695,6 +780,25 @@ Intelligent
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co">#subplot(ggplotly(pl1, tooltip = c(&quot;cnt&quot;)), ggplotly(pl2, tooltip = c(&quot;field_cate_cd&quot;)), nrows=1)</span></a></code></pre></div>
 <p>There is also no pattern among <code>proportion</code>, <code>peer_score</code>, and study <code>field</code>.</p>
 <p>As far as we know, attractiveness is the only characteristic that have the strongest correlation with interest propotion. In conclusion, we found that people with low self esteem in their attractiveness gain more romantic interest after the event.</p>
+=======
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">calc_diff &lt;-<span class="st"> </span><span class="cf">function</span>(y){</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  tmp &lt;-<span class="st"> </span>speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by_</span>(y, <span class="st">&#39;match&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">Freq =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">match =</span> <span class="kw">if_else</span>(match <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  no_rate &lt;-<span class="st"> </span>tmp[<span class="dv">2</span>,<span class="dv">3</span>]<span class="op">/</span>(tmp[<span class="dv">2</span>,<span class="dv">3</span>]<span class="op">+</span>tmp[<span class="dv">1</span>,<span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">  yes_rate &lt;-<span class="st"> </span>tmp[<span class="dv">4</span>,<span class="dv">3</span>]<span class="op">/</span>(tmp[<span class="dv">3</span>,<span class="dv">3</span>]<span class="op">+</span>tmp[<span class="dv">4</span>,<span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">  hobby &lt;-<span class="st"> </span><span class="kw">substring</span>(<span class="kw">as.character</span>(y), <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">  result &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;hobby&quot;</span> =<span class="st"> </span><span class="kw">c</span>(hobby,hobby), <span class="st">&quot;share_hobby&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>), <span class="st">&quot;Freq&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">  result[<span class="dv">1</span>,<span class="dv">3</span>] &lt;-yes_rate<span class="op">*</span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">  result[<span class="dv">2</span>,<span class="dv">3</span>] &lt;-no_rate<span class="op">*</span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">  <span class="kw">return</span>(result)</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">cd_df &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind,<span class="kw">lapply</span>(<span class="kw">paste0</span>(<span class="st">&#39;same&#39;</span>,<span class="kw">colnames</span>(speed_dating <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sports<span class="op">:</span>yoga))),calc_diff))</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="kw">ggplot</span>(cd_df,<span class="kw">aes</span>(<span class="dt">x=</span>Freq,<span class="dt">y=</span><span class="kw">fct_reorder2</span>(hobby, share_hobby <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>,Freq, <span class="dt">.desc=</span><span class="ot">FALSE</span>), <span class="dt">color =</span> <span class="kw">fct_rev</span>(share_hobby)))<span class="op">+</span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>)<span class="op">+</span><span class="kw">ylab</span>(<span class="st">&quot;Hobbies&quot;</span>)<span class="op">+</span><span class="kw">xlab</span>(<span class="st">&quot;Percent (%)&quot;</span>)<span class="op">+</span><span class="kw">ggtitle</span>(<span class="st">&quot;Chances of Matching&quot;</span>)<span class="op">+</span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&quot;Participants Share this Hobby&quot;</span>)<span class="op">+</span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>), <span class="dt">axis.title.x =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>),</a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">        <span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>), <span class="dt">axis.title.y =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>),</a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">20</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>),</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>), </a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">           <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">14</span>))</a></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+>>>>>>> ef2a7eee1340762d1ab8e02daa07f097bb0fb3d0
 
 </div>
 </div>

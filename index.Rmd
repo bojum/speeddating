@@ -1,21 +1,39 @@
 --- 
 title: "How to Get More Matches in Speed Dating"
-author: "Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Michael Qi (zq2175)"
+author: "Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Zhi Qi (zq2175)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
 
 # Introduction
 
-```{r}
+```{r, echo=FALSE}
 library(knitr)
 library(kableExtra)
 library(tidyverse)
 ```
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo=FALSE}
 ## to locally render the book
 bookdown::render_book("index.Rmd")
 browseURL("docs/index.html")
 ```
+## Introduction
 
+What is love at first sight? Imagine meeting a girl or a guy that you really like, and you want to make a better impression. How should you act out? How do you know if you are a good match for him/her? This project will help you understand what are the important factors that will help you make a better impression. 
+
+## Background
+
+We use speed experiment dating data collected by Columbia Business schooll as a foundation to the analyses in this project. 
+
+Being popular since 1970s, speed dating is a formalized matchmaking process which enables singles to meet large numbers of new potential partners in a very short period of time (4 minutes in our data), which is the equivalent to having many “first sights” and being able to choose the potential partners that you like. If both participants like each other, then it is a “match” and they can exchange contact informations and such. 
+
+For research purposes, participants in our data were asked to fill out several forms before and during the speed dating process. Our findings are based on such data. 
+
+## Our Goal
+
+In this project, we explore what factors that influence the chances of getting a “match.” For example, will having a same hobby with your partner increase your chances? Or should you behave as confident you can to leave a better impression? If not, what things or factors are your partner looking for? We derive our focus on the factors that you can control.
+
+## Project Overview
+
+In section 2, we give an overview of our data, where it was from and what issues it may have. Then in section 3 & 4, we describe our data cleaning/transformation process and patterns for missing values. In section 5, we provide our analyses and interesting findings, and the answers to those questions above will be in this section as well. In section 6, we include a interative section, where you can interact with the graphs and explore interesting findings on your own. We include our conclusions to this project in section 7. 
