@@ -3,14 +3,22 @@ title: "How to Get More Matches in Speed Dating"
 author: "Yingyu Cao (yc3713), Bo Jumrustanasan (pj2356), Zhi Qi (zq2175)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Introduction
 
 ```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(knitr)
 library(kableExtra)
 library(tidyverse)
+library(ggplot2)
+library(vcd)
+library(jsonlite)
+library(gridExtra)
+library(plotly)
 ```
 
 ```{r, eval = FALSE, echo=FALSE}
