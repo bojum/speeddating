@@ -1,12 +1,6 @@
-## Q2: How males and females' expectation and self-evaluation differs?
+## Q2: How males and females' expectation and self-evaluation differs? {-#i}
 
 From the plot we found that only a small proportion of people participate in the experiment for dating, which meant they may not treat the dating seriously and just choose their partners randomly. So in this section, we explored whether people really chose to date with someone that meet their expectation, or they made their decision basing on other factors, and is there a difference between male and female. Another thing we were interested in is would males and females' self-evaluation be influenced after they dating with someone.
-
-```{r message=FALSE}
-library(ggplot2)
-library(tidyverse)
-```
-
 
 
 ```{r}
@@ -30,8 +24,9 @@ speed_dating %>% select(iid,goal) %>%
 
 We define expectation as how people weight the importance of some attributes of their partners, and define self-evaluation of how people score their performance on those attributes. In this experiment people were asked their opinions about six attributes, which we descibed in section 2.2, to represent their expectation and five attributes to represent their self-evaluation ("share hobby" is dropped).
 
-### Expectations
-#### How does males and females' expectation change before and after datings?
+### Expectations {-#i}
+
+#### How does males and females' expectation change before and after datings? {-#i}
 
 In this part, we analyzed the weights of expectation in six attributes (attractive, sincere, intelligent, fun, ambitious and shared hobbies) between males and females, and how did the weight change after meeting someone.
 
@@ -89,7 +84,7 @@ By analyzing the expectation before and after the dating by gender, we found:
 
 3. There is no large difference of the expections after the datings. But the weight of attraction increased slightly in both female and male groups. To test whether these change last for a long time, we continued to do the following exploratory.
 
-#### Does the changes last for a long time?
+#### Does the changes last for a long time? {-#i}
 
 ```{r}
 gender_exp <- speed_dating %>% 
@@ -202,8 +197,9 @@ gender_exp_bar %>%
 
 There is no obvious difference between the expections of matched group and unmatched groups, which means whether people are on a dating or not does not influence their expections to their partners (if they are not dating secretly or with another person except for the one they meet in this event).
 
-### Self-evaluation
-#### How does self-evaluation change before and after datings?
+### Self-evaluation {-#i}
+
+#### How does self-evaluation change before and after datings? {-#i}
 ```{r}
 gender_eva <- speed_dating %>% 
   select(iid,gender,
@@ -259,7 +255,8 @@ tmp %>%
 
 ```
 
-#### Does match influence changes in self-evaluation?
+#### Does match influence changes in self-evaluation? {-#i}
+
 ```{r }
 gender_eva <- speed_dating %>% 
   select(iid,gender,
@@ -320,7 +317,7 @@ tmp %>%
 
 There is no large difference in self-evaluation regrading to the five attributes (ambitious, attractive, fun, intelligent and sincere) between females and males before and after the datings, nor the matching results influence their self-evaluation.
 
-#### Does the expectation influence whether or not they decide to date?
+#### Does the expectation influence whether or not they decide to date? {-#i}
 
 Usually people choose to date with someone because he/she has some attributes that attract them. It is likely that people will choose to date with someone who have the expective attributes. To test this assumption, we did the following exploratory. 
 
@@ -369,7 +366,7 @@ tmp %>%
 
 If people made their decisions based on the score they gave, for people they said "yes", the score for them should be higher than for those they said "no". But according to the graph, there is no difference between the distribution of the score between "yes" and "no" groups, even if we seperate people by their goal of participating the event excpet for the female groups whose goal is dating. In the female groups whose goal is dating, they tent to date with people who had higher scores.
 
-### What influence people decisions?
+### What influence people decisions? {-#i}
 
 
 ```{r}

@@ -1,4 +1,4 @@
-## Question: Will backrgound and common interests influence the match? Which feature is the most influential?
+## Question: Will backrgound and common interests influence the match? Which feature is the most influential? {-#i}
 
 
 
@@ -7,13 +7,6 @@ To answer this question, we have to look at background and common interests sepe
 Data Cleaning:
 
 we would like to append 6 indicator columns that indicates whether this person and his/her partner share that feature in common (actually 5 because samerace is available in the original data). 
-
-```{r}
-library(ggplot2)
-library(tidyverse)
-library(vcd)
-library(jsonlite)
-```
 
 ```{r, eval=FALSE}
 load('data/speed_dating.RData')
