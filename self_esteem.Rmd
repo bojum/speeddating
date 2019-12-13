@@ -1,4 +1,4 @@
-## Question: do people with excess self-esteem get more romantic interest?
+## Question: do people with excess self-esteem get more romantic interest? {-#i}
 
 ```{r, echo = FALSE}
 
