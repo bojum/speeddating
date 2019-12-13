@@ -2,7 +2,7 @@
 
 The dataset for our project is `speed dating` dataset provided by Anna Montoya. It is publicly available on [Data.com] as an [excel file](https://data.world/annavmontoya/speed-dating-experiment). 
 
-The data contains information about questionnaires filled out before and during a speed dating experiment in 2002-2004, which was run by professor Ray Fisman and Sheena Iyengar from Columbia Business School. The primary purpose of the experiment was discussed in their paper [Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment](https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf). 
+The data contains information about questionnaires filled out before, during and after a speed dating experiment in 2002-2004, which was run by professor Ray Fisman and Sheena Iyengar from Columbia Business School. The primary purpose of the experiment was discussed in their paper [Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment](https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf). 
 
 ## Experimental Design
 
@@ -12,7 +12,7 @@ Subjects in this experiments were students in graduate and professional school a
 
 * Gender, Location, Income, Age, etc.
 * Their interests in 17 hobbies listed to them
-* Their self evaluation
+* Their self-evaluation
 
 There were 20 sessions of the experiment, all of which had the same setting. All participants were randomly assigned to one of the sessions. On the session day, participants who are unawared of the total number of participants on that day had to fill in a scorecard that contains:
 
@@ -28,7 +28,7 @@ There were 20 sessions of the experiment, all of which had the same setting. All
     
 There were roughly the same number of female and male participants in each sessions. Subjects only had conversation with those of different genders. Female subjects would meet all male subjects in the session. The scorecard was to be filled after each four-minute conversation.
 
-The day after the *Speed Dating* event, particiapants were asked to complete the follow-up online questionaire in order to obtain their matches. For more detail on the experiment procedure, please check out the [study](https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf).
+The day after the *Speed Dating* event, particiapants were asked to complete the follow-up online questionaire in order to obtain their matches. For more details on the experiment procedure, please check out the [study](https://faculty.chicagobooth.edu/emir.kamenica/documents/genderDifferences.pdf).
 
 
 ## Data Description
