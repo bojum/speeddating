@@ -1,4 +1,4 @@
-## Question: Will backrgound and common interests influence the match? Which feature is the most influential?
+## Question: Will backrgound and common interests influence the match? Which feature is the most influential? {-#i}
 
 
 
@@ -8,6 +8,7 @@ Data Cleaning:
 
 we would like to append 6 indicator columns that indicates whether this person and his/her partner share that feature in common (actually 5 because samerace is available in the original data). 
 
+<<<<<<< HEAD
 ```{r}
 library(ggplot2)
 library(tidyverse)
