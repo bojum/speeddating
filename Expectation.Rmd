@@ -7,6 +7,8 @@ library(ggplot2)
 library(tidyverse)
 ```
 
+
+
 ```{r}
 load("data/speed_dating.RData")
 speed_dating %>% select(iid,goal) %>%
@@ -24,8 +26,6 @@ speed_dating %>% select(iid,goal) %>%
   scale_fill_manual(values = c("grey50","lightblue"))+
   labs(x="goal",title = "The Reason People Participate the Experiment")+
   theme(legend.position = "none")
-
-
 ```
 
 We define expectation as how people weight the importance of some attributes of their partners, and define self-evaluation of how people score their performance on those attributes. In this experiment people were asked their opinions about six attributes, which we descibed in section 2.2, to represent their expectation and five attributes to represent their self-evaluation ("share hobby" is dropped).
@@ -139,12 +139,13 @@ gender_exp_bar %>%
   theme(axis.text.x = element_text(angle=30,hjust = 1))
 ```
 
+
 To check does the dating have a long-term influence on people's expectations towards their partners, we did an analysis basing on the observations who answered the questions two weeks after.
 Although only part of the participants answered the questions again two weeks after the dating, there is still 6800 records (449 individuals). From the graph we found that one-time dating only has a short-term influence on people's expectations towards their partners. As time pass by, their expectations tended to come back to the level before the datings.
 
 This finding is reasonable since they were only one-time datings. However, to get a conclusion about whether people's mind change after dating, we need to seperate the groups into matched and unmatched.
 
-#### Does match influence changes in expectation?
+
 ```{r}
 gender_exp <- speed_dating %>% 
   select(iid,gender
@@ -342,6 +343,7 @@ gender_mat$dec_o <- factor(gender_mat$dec_o)
 gender_mat$goal <- factor(gender_mat$goal)
 ```
 
+
 ```{r, warning=FALSE}
 tmp <- gender_mat %>% select(iid,gender,dec_o,samerace,
                       attr:shar,like,prob,goal) %>%                       # score to others
@@ -369,6 +371,7 @@ If people made their decisions based on the score they gave, for people they sai
 
 ### What influence people decisions?
 
+
 ```{r}
 gender_mat %>% select(iid,gender,dec_o,samerace,
                       attr:shar,goal,like,prob) %>%                       # score to others
@@ -377,6 +380,7 @@ gender_mat %>% select(iid,gender,dec_o,samerace,
   geom_point()+
   labs(title = "Scores and Likes")
 ```
+
 
 The graph above shows that score and a good impression (`like`) of a person has a positive relationship, which means if scores did not influence people's decisions, a good impression mattered little.
 
@@ -422,6 +426,7 @@ p4 <- tmp[!is.na(tmp$yn_ratio),] %>%
 gridExtra::grid.arrange(p3,p4,nrow=1,top="Others' Opinions Influence Decisions")
 
 ```
+
 
 The first graph shows how much do people like their partners. And the second graph shows how likely do people think their partner would like to date with them, namely, say "yes" to them. The graph on the right side is the number of people who gave the score. We use yes-no ratio (the number of people who said "yes" against those who said "no") to denote the decision of the group. If the ratio is larger than one, means among the people who gave the score, the majority of them want to date with partners.
 
