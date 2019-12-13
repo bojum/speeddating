@@ -1,3 +1,248 @@
 # Interactive component
 
 
+The following interactive component compares the proportion of matches based on whether the participant and partner share the listed feature*. This graph is also available in section 5.
+
+Most variables do not have an impact on the chance of matching whether they share this feature or not. In fact, sharing the hobby of watching movies negatively impacts the chance of matching, potentially due to the fact that male participants having watching movies as a hobby indicates that his work is not as demanding, or that he is not ambitious with his career. However, one feature almost double the rate of matching (although with a very small sample size). Click and find out!
+
+```{r}
+#save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
+load(file = "data/speed_dating_q1.Rdata")
+speed_dating <- speed_dating_q1
+names = colnames(speed_dating %>% select(sports:yoga))
+```
+
+```{r, results='asis'}
+# for mosaic plot 
+
+# create a clean dataframe for each common feature
+sameracedata = speed_dating %>% group_by(samerace, match) %>% summarise(Freq = n()) %>% ungroup() %>% mutate(samerace = if_else(samerace == 1, "Yes", "No")) %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samelocationdata = speed_dating %>% group_by(samelocation, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samefielddata = speed_dating %>% group_by(samefield, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samesportsdata = speed_dating %>% group_by(samesports, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samereadingdata = speed_dating %>% group_by(samereading, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samemoviesdata = speed_dating %>% group_by(samemovies, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+cat(
+  paste(
+  '<script>
+    var sameracedata = ',toJSON(sameracedata),';
+    var samelocationdata = ',toJSON(samelocationdata),';
+    var samefielddata = ',toJSON(samefielddata),';
+    var samesportsdata = ',toJSON(samesportsdata),';
+    var samereadingdata = ',toJSON(samereadingdata),';
+    var samemoviesdata = ',toJSON(samemoviesdata),';
+  </script>'
+  , sep="")
+)
+```
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<svg width="910" height="550">		</svg>
+<script>
+  //initialize the svg
+  var w = 800;
+  var h = 500;
+  var margin = {top: 25, right: 25, bottom: 25, left: 25};
+  var innerWidth = w - margin.left - margin.right;
+  var innerHeight = h - margin.top - margin.bottom;
+  var dur = 500;
+  
+  var svg = d3.select("svg");
+  svg.append("rect").attr("x", 0).attr("y", 0).attr("width", w).attr("height", h).attr("fill", "aliceblue");
+  
+  //initialize dataset
+  var fill = "lightblue";
+  var stroke = "#D0D3D4";
+  var textfill = "#797D7F";
+  
+  var dataset = [{key: "race", value: sameracedata, f:"#2471A3", s:"#4B4C4D", tf: "#4B4C4D", axis: "Same Race", selected: "True", fw: "bold"}
+                ,{key: "location", value: samelocationdata, f:fill, s:stroke, tf: textfill, axis: "from Same Location", selected: "False", fw: "normal"}
+                ,{key: "field", value: samefielddata, f:fill, s:stroke, tf: textfill, axis: "Work in Same Field", selected: "False", fw: "normal"}
+                ,{key: "sports", value: samesportsdata, f:fill, s:stroke, tf: textfill, axis: "Both love Sports", selected: "False", fw: "normal"}
+                ,{key: "reading", value: samereadingdata, f:fill, s:stroke, tf: textfill, axis: "Both love Reading", selected: "False", fw: "normal"}
+                ,{key: "movie", value: samemoviesdata, f:fill, s:stroke, tf: textfill, axis: "Both love Movies", selected: "False", fw: "normal"}];
+  
+  // use race feature as the initial plot
+  var data = sameracedata;
+
+  //manually transform to a mosaic plot
+  function format(data){
+    var offset = 50;
+    var plotwidth = 350;
+    var plotheight = 350;
+    var bar2_x = (data[0].Freq+data[1].Freq)/d3.sum(data.map(d => d.Freq))*(plotwidth-5);
+    var bar1_y = data[0].Freq/(data[0].Freq+data[1].Freq)*plotheight;
+    var bar2_y = data[2].Freq/(data[2].Freq+data[3].Freq)*plotheight;
+    return [{x: 2.5* offset, y: 1.5 * offset, w: bar2_x, h:bar1_y, f: "#D0D3D4", lx: bar2_x, t: "No", tx: 2.5 * offset+(bar2_x+5)/2, ty: 1.5 * offset -15},
+            {x: 2.5* offset, y:bar1_y+1.5 * offset, w: bar2_x, h:plotheight-bar1_y, f: "#7B7D7D", t: "No", tx: 2.5 * offset-30, ty: bar1_y/2+1.5*offset},
+            {x:bar2_x+5+2.5* offset, y:1.5 * offset, w: plotwidth-5-bar2_x, h: bar2_y, f: "#D0D3D4", t: "Yes", tx: 2.5 * offset+(bar2_x+5)+(plotwidth-(bar2_x+5))/2, ty: 1.5 * offset - 15},
+            {x:bar2_x+5+2.5* offset, y: bar2_y+1.5 * offset, w:plotwidth-5-bar2_x, h: plotheight - bar2_y, f:"#7B7D7D", t: "Yes", tx:  2.5 * offset-30, ty: (plotheight - bar1_y)/2+bar1_y+1.5 * offset}];
+  }
+  
+  //append the plot to a new group g
+  var bars = svg.append("g")
+                .attr("id", "plot")
+                .attr("transform", `translate (${margin.left}, ${margin.top})`)
+              .selectAll("rect")
+                .data(format(data));
+  
+  // plot the initial plot
+  bars.enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)  
+      .attr("width", d => d.w)
+      .attr("height", d => d.h)
+      .attr("fill",d => d.f)
+      .attr("stroke", "#7B7D7D")
+      .attr("stroke-width", "1");
+      
+  //add labels for axis
+  svg.append("text")
+      .attr("x", "50")
+      .attr("y", "250")
+      .attr("font-size","20")
+      .attr("text-anchor","middle")
+      .attr("font-family","helvetica")
+      .attr("fill", "#313132")
+      .attr("font-weight","bold")
+      .text("Match");
+                      
+  var xlabel = svg.append("g")
+                  .attr("id", "axis")
+                  .attr("transform",`translate (${margin.left}, ${margin.top})`)
+                .selectAll("text")
+                  .data([dataset[0]], d=>d.key).enter()
+                  .append("text")
+                  .attr("x", "300")
+                  .attr("y", "20")
+                  .attr("font-size","20")
+                  .attr("text-anchor","middle")
+                  .attr("font-family","helvetica")
+                  .attr("fill", "#313132")
+                  .attr("font-weight","bold")
+                  .text(d =>d.axis);        
+  
+  
+  // add radio buttons
+  var buttons1 = svg.append("g")
+                    .attr("id", "buttons1")
+                    .attr("class", "radio")
+                    .attr("transform",  `translate (${margin.left}, ${margin.top})`)
+                  .selectAll("circle")
+                    .data(dataset, d=>d.key).enter().append("circle")
+                    .attr("cx", "580")
+                    .attr("cy", (d,i) => i*50+125)
+                    .attr("r", "13")
+                    .attr("fill", "aliceblue")
+                    .attr("stroke", d=>d.s)
+                    .attr("stroke-width", "3")
+                    
+  var buttons2 = svg.append("g")
+                    .attr("id", "buttons2")
+                    .attr("class", "radio")
+                    .attr("transform",  `translate (${margin.left}, ${margin.top})`)
+                  .selectAll("circle")
+                    .data(dataset, d=>d.key).enter().append("circle")
+                    .attr("cx", "580")
+                    .attr("cy", (d,i) => i*50+125)
+                    .attr("r", "6")
+                    .attr("fill", d => d.f)
+                    
+  // add "Yes" and "No" text labels
+  var labels = svg.select("g#plot").selectAll("text").data(format(data));
+  
+  labels.enter().append("text")
+      .attr("id", "label")
+      .attr("x", d=>d.tx)
+      .attr("y", d=>d.ty)
+      .attr("font-size","18")
+      .attr("text-anchor","middle")
+      .attr("font-family","helvetica")
+      .attr("fill", "#313132")
+      .text(d =>d.t); 
+                
+  //append text next to buttons
+  var texts = svg.append("g")
+                .attr("id", "texts")
+                .attr("class", "radio")
+                .attr("transform", `translate (${margin.left}, ${margin.top})`)
+              .selectAll("text")
+                .data(dataset, d=>d.key).enter().append("text")
+                .attr("x", "610")
+                .attr("y", (d, i) => i*50+130)
+                .attr("fill", d=>d.tf)
+                .attr("font-size","20")
+                .attr("font-family", "helvetica")
+                .attr("font-weight", d=>d.fw)
+                .text(d=>d.key);
+                    
+  //switch event listeners if a button is clicked
+  d3.selectAll("g.radio").selectAll("circle").on("click", function(){
+    //update the chart
+    update(format(d3.select(this).datum().value));
+    //change the color of the radio buttons
+    dataset.map(d => d.f = fill);
+    dataset.map(d => d.s = stroke);
+    dataset.map(d => d.tf = textfill);
+    dataset.map(d => d.selected = "False");
+    d3.select(this).datum().f = "#2471A3";
+    d3.select(this).datum().s = "#4B4C4D";
+    d3.select(this).datum().tf = "#4B4C4D";
+    d3.select(this).datum().selected = "True";
+    updatebutton(dataset);
+    //change axis label
+    xlabel.data([d3.select(this).datum()]).text(d=>d.axis);
+  });
+      
+  // update method (using general update pattern)
+  function update(data){
+    var bars = svg.select("#plot").selectAll("rect").data(data);
+    bars.transition().duration(dur)
+        .ease(d3.easeLinear)
+        .attr("x", d => d.x)
+        .attr("y", d => d.y)  
+        .attr("width", d => d.w)
+        .attr("height", d => d.h);
+    var labels = svg.selectAll("text#label").data(data);
+    labels.transition().duration(dur)
+        .ease(d3.easeLinear)
+        .attr("x", d => d.tx)
+        .attr("y", d => d.ty) 
+  }
+  
+  // update method(for radio buttons)
+  function updatebutton(dataset){
+    buttons1.data(dataset).attr("stroke", d => d.s);
+    buttons2.data(dataset).attr("fill", d=> d.f);
+    texts.data(dataset).attr("fill", d=>d.tf).attr("font-weight", d=>d.fw);
+  }
+  
+  d3.selectAll("g.radio").selectAll("circle").on("mouseover", handleMouseOver).on("mouseout", handleMouseOut);
+  
+  function handleMouseOver(){
+    if(d3.select(this).datum().selected == "False"){
+      d3.select(this).datum().f = "#4a9bd4";
+      d3.select(this).datum().s = "#969696";
+      d3.select(this).datum().tf = "#969696";
+      d3.select(this).datum().fw = "bold";
+      updatebutton(dataset);
+    }
+  }
+  
+  function handleMouseOut(){
+    if(d3.select(this).datum().selected == "False"){
+      d3.select(this).datum().f = fill;
+      d3.select(this).datum().s = stroke;
+      d3.select(this).datum().tf = textfill;
+      d3.select(this).datum().fw = "normal";
+      updatebutton(dataset);
+    }
+  }
+</script>
+
+
+
+
+
+*For sports, reading and movies, both participant and his/her partner having an interest of at least 7 (from a scale of 1 to 10) is considered sharing the feature.
