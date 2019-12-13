@@ -1,13 +1,982 @@
 # Results
 
-```{r, child = "Influential_Features.Rmd"}
+## Will Backrgound and Common Interests Influence the Match? Which Feature is the Most Influential?
+
+The following interactive component compares the proportion of matches based on whether the participant and partner share the listed feature*. This graph is also available in section 6.
+
+
+```{r}
+#save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
+load(file = "data/speed_dating_q1.Rdata")
+speed_dating <- speed_dating_q1
+names = colnames(speed_dating %>% select(sports:yoga))
+```
+
+```{r, results='asis'}
+# for mosaic plot 
+
+# create a clean dataframe for each common feature
+sameracedata = speed_dating %>% group_by(samerace, match) %>% summarise(Freq = n()) %>% ungroup() %>% mutate(samerace = if_else(samerace == 1, "Yes", "No")) %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samelocationdata = speed_dating %>% group_by(samelocation, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samefielddata = speed_dating %>% group_by(samefield, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samesportsdata = speed_dating %>% group_by(samesports, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samereadingdata = speed_dating %>% group_by(samereading, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+samemoviesdata = speed_dating %>% group_by(samemovies, match) %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+cat(
+  paste(
+  '<script>
+    var sameracedata = ',toJSON(sameracedata),';
+    var samelocationdata = ',toJSON(samelocationdata),';
+    var samefielddata = ',toJSON(samefielddata),';
+    var samesportsdata = ',toJSON(samesportsdata),';
+    var samereadingdata = ',toJSON(samereadingdata),';
+    var samemoviesdata = ',toJSON(samemoviesdata),';
+  </script>'
+  , sep="")
+)
+```
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<svg width="910" height="550">		</svg>
+<script>
+  //initialize the svg
+  var w = 800;
+  var h = 500;
+  var margin = {top: 25, right: 25, bottom: 25, left: 25};
+  var innerWidth = w - margin.left - margin.right;
+  var innerHeight = h - margin.top - margin.bottom;
+  var dur = 500;
+  
+  var svg = d3.select("svg");
+  svg.append("rect").attr("x", 0).attr("y", 0).attr("width", w).attr("height", h).attr("fill", "aliceblue");
+  
+  //initialize dataset
+  var fill = "lightblue";
+  var stroke = "#D0D3D4";
+  var textfill = "#797D7F";
+  
+  var dataset = [{key: "race", value: sameracedata, f:"#2471A3", s:"#4B4C4D", tf: "#4B4C4D", axis: "Same Race", selected: "True", fw: "bold"}
+                ,{key: "location", value: samelocationdata, f:fill, s:stroke, tf: textfill, axis: "from Same Location", selected: "False", fw: "normal"}
+                ,{key: "field", value: samefielddata, f:fill, s:stroke, tf: textfill, axis: "Work in Same Field", selected: "False", fw: "normal"}
+                ,{key: "sports", value: samesportsdata, f:fill, s:stroke, tf: textfill, axis: "Both love Sports", selected: "False", fw: "normal"}
+                ,{key: "reading", value: samereadingdata, f:fill, s:stroke, tf: textfill, axis: "Both love Reading", selected: "False", fw: "normal"}
+                ,{key: "movie", value: samemoviesdata, f:fill, s:stroke, tf: textfill, axis: "Both love Movies", selected: "False", fw: "normal"}];
+  
+  // use race feature as the initial plot
+  var data = sameracedata;
+
+  //manually transform to a mosaic plot
+  function format(data){
+    var offset = 50;
+    var plotwidth = 350;
+    var plotheight = 350;
+    var bar2_x = (data[0].Freq+data[1].Freq)/d3.sum(data.map(d => d.Freq))*(plotwidth-5);
+    var bar1_y = data[0].Freq/(data[0].Freq+data[1].Freq)*plotheight;
+    var bar2_y = data[2].Freq/(data[2].Freq+data[3].Freq)*plotheight;
+    return [{x: 2.5* offset, y: 1.5 * offset, w: bar2_x, h:bar1_y, f: "#D0D3D4", lx: bar2_x, t: "No", tx: 2.5 * offset+(bar2_x+5)/2, ty: 1.5 * offset -15},
+            {x: 2.5* offset, y:bar1_y+1.5 * offset, w: bar2_x, h:plotheight-bar1_y, f: "#7B7D7D", t: "No", tx: 2.5 * offset-30, ty: bar1_y/2+1.5*offset},
+            {x:bar2_x+5+2.5* offset, y:1.5 * offset, w: plotwidth-5-bar2_x, h: bar2_y, f: "#D0D3D4", t: "Yes", tx: 2.5 * offset+(bar2_x+5)+(plotwidth-(bar2_x+5))/2, ty: 1.5 * offset - 15},
+            {x:bar2_x+5+2.5* offset, y: bar2_y+1.5 * offset, w:plotwidth-5-bar2_x, h: plotheight - bar2_y, f:"#7B7D7D", t: "Yes", tx:  2.5 * offset-30, ty: (plotheight - bar1_y)/2+bar1_y+1.5 * offset}];
+  }
+  
+  //append the plot to a new group g
+  var bars = svg.append("g")
+                .attr("id", "plot")
+                .attr("transform", `translate (${margin.left}, ${margin.top})`)
+              .selectAll("rect")
+                .data(format(data));
+  
+  // plot the initial plot
+  bars.enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)  
+      .attr("width", d => d.w)
+      .attr("height", d => d.h)
+      .attr("fill",d => d.f)
+      .attr("stroke", "#7B7D7D")
+      .attr("stroke-width", "1");
+      
+  //add labels for axis
+  svg.append("text")
+      .attr("x", "50")
+      .attr("y", "250")
+      .attr("font-size","20")
+      .attr("text-anchor","middle")
+      .attr("font-family","helvetica")
+      .attr("fill", "#313132")
+      .attr("font-weight","bold")
+      .text("Match");
+                      
+  var xlabel = svg.append("g")
+                  .attr("id", "axis")
+                  .attr("transform",`translate (${margin.left}, ${margin.top})`)
+                .selectAll("text")
+                  .data([dataset[0]], d=>d.key).enter()
+                  .append("text")
+                  .attr("x", "300")
+                  .attr("y", "20")
+                  .attr("font-size","20")
+                  .attr("text-anchor","middle")
+                  .attr("font-family","helvetica")
+                  .attr("fill", "#313132")
+                  .attr("font-weight","bold")
+                  .text(d =>d.axis);        
+  
+  
+  // add radio buttons
+  var buttons1 = svg.append("g")
+                    .attr("id", "buttons1")
+                    .attr("class", "radio")
+                    .attr("transform",  `translate (${margin.left}, ${margin.top})`)
+                  .selectAll("circle")
+                    .data(dataset, d=>d.key).enter().append("circle")
+                    .attr("cx", "580")
+                    .attr("cy", (d,i) => i*50+125)
+                    .attr("r", "13")
+                    .attr("fill", "aliceblue")
+                    .attr("stroke", d=>d.s)
+                    .attr("stroke-width", "3")
+                    
+  var buttons2 = svg.append("g")
+                    .attr("id", "buttons2")
+                    .attr("class", "radio")
+                    .attr("transform",  `translate (${margin.left}, ${margin.top})`)
+                  .selectAll("circle")
+                    .data(dataset, d=>d.key).enter().append("circle")
+                    .attr("cx", "580")
+                    .attr("cy", (d,i) => i*50+125)
+                    .attr("r", "6")
+                    .attr("fill", d => d.f)
+                    
+  // add "Yes" and "No" text labels
+  var labels = svg.select("g#plot").selectAll("text").data(format(data));
+  
+  labels.enter().append("text")
+      .attr("id", "label")
+      .attr("x", d=>d.tx)
+      .attr("y", d=>d.ty)
+      .attr("font-size","18")
+      .attr("text-anchor","middle")
+      .attr("font-family","helvetica")
+      .attr("fill", "#313132")
+      .text(d =>d.t); 
+                
+  //append text next to buttons
+  var texts = svg.append("g")
+                .attr("id", "texts")
+                .attr("class", "radio")
+                .attr("transform", `translate (${margin.left}, ${margin.top})`)
+              .selectAll("text")
+                .data(dataset, d=>d.key).enter().append("text")
+                .attr("x", "610")
+                .attr("y", (d, i) => i*50+130)
+                .attr("fill", d=>d.tf)
+                .attr("font-size","20")
+                .attr("font-family", "helvetica")
+                .attr("font-weight", d=>d.fw)
+                .text(d=>d.key);
+                    
+  //switch event listeners if a button is clicked
+  d3.selectAll("g.radio").selectAll("circle").on("click", function(){
+    //update the chart
+    update(format(d3.select(this).datum().value));
+    //change the color of the radio buttons
+    dataset.map(d => d.f = fill);
+    dataset.map(d => d.s = stroke);
+    dataset.map(d => d.tf = textfill);
+    dataset.map(d => d.selected = "False");
+    d3.select(this).datum().f = "#2471A3";
+    d3.select(this).datum().s = "#4B4C4D";
+    d3.select(this).datum().tf = "#4B4C4D";
+    d3.select(this).datum().selected = "True";
+    updatebutton(dataset);
+    //change axis label
+    xlabel.data([d3.select(this).datum()]).text(d=>d.axis);
+  });
+      
+  // update method (using general update pattern)
+  function update(data){
+    var bars = svg.select("#plot").selectAll("rect").data(data);
+    bars.transition().duration(dur)
+        .ease(d3.easeLinear)
+        .attr("x", d => d.x)
+        .attr("y", d => d.y)  
+        .attr("width", d => d.w)
+        .attr("height", d => d.h);
+    var labels = svg.selectAll("text#label").data(data);
+    labels.transition().duration(dur)
+        .ease(d3.easeLinear)
+        .attr("x", d => d.tx)
+        .attr("y", d => d.ty) 
+  }
+  
+  // update method(for radio buttons)
+  function updatebutton(dataset){
+    buttons1.data(dataset).attr("stroke", d => d.s);
+    buttons2.data(dataset).attr("fill", d=> d.f);
+    texts.data(dataset).attr("fill", d=>d.tf).attr("font-weight", d=>d.fw);
+  }
+  
+  d3.selectAll("g.radio").selectAll("circle").on("mouseover", handleMouseOver).on("mouseout", handleMouseOut);
+  
+  function handleMouseOver(){
+    if(d3.select(this).datum().selected == "False"){
+      d3.select(this).datum().f = "#4a9bd4";
+      d3.select(this).datum().s = "#969696";
+      d3.select(this).datum().tf = "#969696";
+      d3.select(this).datum().fw = "bold";
+      updatebutton(dataset);
+    }
+  }
+  
+  function handleMouseOut(){
+    if(d3.select(this).datum().selected == "False"){
+      d3.select(this).datum().f = fill;
+      d3.select(this).datum().s = stroke;
+      d3.select(this).datum().tf = textfill;
+      d3.select(this).datum().fw = "normal";
+      updatebutton(dataset);
+    }
+  }
+</script>
+
+Most variables do not have an impact on the chance of matching whether they share this feature or not. In fact, sharing the hobby of watching movies negatively impacts the chance of matching, potentially due to the fact that male participants having watching movies as a hobby indicates that his work is not as demanding, or that he is not ambitious with his career. However, if a participant and partner are both from the same location, their chance of matching almost double the rate of matching (although with a very small sample size). This is probably because their cost of relocation is minimized if they were to move forward with their relationship. Plus, they will also have a lot of common topics to talk about, which could drastically help feel like they are from the same community.
+
+
+We then look at all the available hobbies that could be of common interest in the dataset, and see if any of those features heavily impacts the chances of getting matched. They following graph demonstrates the chance of matching depending on whether both participants share the same hobby or not. 
+
+```{r}
+calc_diff <- function(y){
+  tmp <- speed_dating %>% group_by_(y, 'match') %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+  no_rate <- tmp[2,3]/(tmp[2,3]+tmp[1,3])
+  yes_rate <- tmp[4,3]/(tmp[3,3]+tmp[4,3])
+  hobby <- substring(as.character(y), 5)
+  result <- data.frame("hobby" = c(hobby,hobby), "share_hobby" = c("Yes", "No"), "Freq" = c(0,0))
+  result[1,3] <-yes_rate*100
+  result[2,3] <-no_rate*100
+  return(result)
+}
+cd_df <- do.call(rbind,lapply(paste0('same',colnames(speed_dating %>% select(sports:yoga))),calc_diff))
+ggplot(cd_df,aes(x=Freq,y=fct_reorder2(hobby, share_hobby == 'Yes',Freq, .desc=FALSE), color = fct_rev(share_hobby)))+geom_point(size = 3)+ylab("Hobbies")+xlab("Percent (%)")+ggtitle("Chances of Matching")+labs(color="Participants Share this Hobby")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),
+        axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+        plot.title = element_text(size = 20, face = "bold"),
+        legend.title = element_text(size=16), 
+           legend.text = element_text(size=14))
+```
+
+As we can see from the graph, yoga and clubbing are both crucial factors that could swing the chance of getting matched to your favor. Considering those are nitch hobbies, it makes sense that the rarity of finding someone with the same interest raises your interest for your partner. Even if they are not interested in dating, there is a possibility that they could be asnwering yes to exchange contact information just to be normal friends.
+
+On the other hand, we can see that hobbies such as gaming, tvsports, shopping and movies can be considered a negative factor. As those hobbies are less likely to yield positive impact in one's career and financial situations, which could be an important factor. So even if you are fan of those hobbies, it is best not to mention it during first dates. 
+
+## How Males and Females' Expectation and Self-Evaluation Differ?
+
+From the plot we found that only a small proportion of people participate in the experiment for dating, which meant they may not treat the dating seriously and just choose their partners randomly. So in this section, we explored whether people really chose to date with someone that meet their expectation, or they made their decision basing on other factors, and is there a difference between male and female. Another thing we were interested in is would males and females' self-evaluation be influenced after they dating with someone.
+
+
+```{r}
+load("data/speed_dating.RData")
+speed_dating %>% select(iid,goal) %>%
+  drop_na() %>% 
+  mutate(goal=ifelse(goal==1,"fun",
+                     ifelse(goal==2,"making friends",
+                            ifelse(goal==3|goal==4,"dating",
+                                   ifelse(goal==5,"peer pressure","others"))))) %>%   
+  unique() %>% 
+  group_by(goal) %>% 
+  summarise(frequency=n()) %>% 
+  mutate(dating=ifelse(goal=="dating","Yes","No")) %>% 
+  ggplot(aes(x=reorder(goal,frequency),y=frequency,fill=dating))+
+  geom_bar(stat = "identity")+
+  scale_fill_manual(values = c("grey50","lightblue"))+
+  labs(x="goal",title = "The Reason People Participate the Experiment")+
+  xlab("Goal")+
+  ylab("Frequency")+
+  theme(legend.position = "none")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14))
+```
+
+We define expectation as how people weight the importance of some attributes of their partners, and define self-evaluation of how people score their performance on those attributes. In this experiment people were asked their opinions about six attributes, which we descibed in section 2.2, to represent their expectation and five attributes to represent their self-evaluation ("share hobby" is dropped).
+
+### Expectations {-#i}
+
+#### How Does Males and Females' Expectation Change Before and After Datings? {-#i}
+
+In this part, we analyzed the weights of expectation in six attributes (attractive, sincere, intelligent, fun, ambitious and shared hobbies) between males and females, and how did the weight change after meeting someone.
+
+```{r}
+gender_exp <- speed_dating %>% 
+  select(iid,gender
+         ,attr1_1:shar1_1                        # exp weight to others-1
+         ,pid
+         ,attr1_2:shar1_2                        # exp weight to others-3
+         # ,attr1_3:shar1_3                        # exp weight to others-4
+         )
+
+titles <- c("Expectation by Gender (before)",
+            "Expectation by Gender (one day later)",
+            "Expectation by Gender (weeks later)")
+time <- c("before","one day later","weeks later")
+gender_exp_bar=data.frame()
+for (i in 1:2) {
+  gender_exp_tmp <- gender_exp %>% 
+    drop_na() %>% 
+    select(iid,gender,paste("attr1_",i,sep = ""):paste("shar1_",i,sep = "")) %>% 
+    rename("Attractive"=paste("attr1_",i,sep = ""),
+           "Sincere"=paste("sinc1_",i,sep = ""),
+           "Intelligent"=paste("intel1_",i,sep = ""),
+           "Fun"=paste("fun1_",i,sep = ""),
+           "Ambitious"=paste("amb1_",i,sep = ""),
+           "Shared_hobbies"=paste("shar1_",i,sep = "")) %>%
+    mutate(gender = ifelse(gender == 0, "Female","Male"),time=time[i]) %>% 
+    gather(key="attribute",value="weight",-iid,-gender,-time) %>% 
+    unique()
+  
+  gender_exp_tmp$attribute <- factor(gender_exp_tmp$attribute)
+  gender_exp_tmp$gender <- factor(gender_exp_tmp$gender)
+  gender_exp_tmp$time <- factor(gender_exp_tmp$time)
+  
+  gender_exp_bar <- rbind(gender_exp_bar,gender_exp_tmp)
+}
+
+gender_exp_bar <- gender_exp_bar %>% group_by(gender,time,attribute) %>% 
+  summarise(weight=mean(weight)) %>% 
+  mutate(weight=weight/sum(weight)*100) %>% 
+  ungroup()
+gender_exp_bar %>% 
+  ggplot(aes(x=gender,y=weight,fill=reorder(attribute,-weight)))+
+  geom_bar(position="stack", stat="identity")+
+  facet_wrap(gender_exp_bar$time)+
+  labs(fill = "Attributes",title = "Expectaion to Partners (by Gender)")+
+  xlab("Gender")+
+  ylab("Weight")+
+  theme(legend.position = "none")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14))
+```
+
+By analyzing the expectation before and after the dating by gender, we found:
+
+1. For both female and male, intelligence, sincerity and fun are important attributes they expected to see in their partners.
+
+2. Female attached much more importance to ambition of their partners than male do, while male attached much more importance to attractivity of the partners than female do. 
+
+3. There is no large difference of the expections after the datings. But the weight of attraction increased slightly in both female and male groups. To test whether these change last for a long time, we continued to do the following exploratory.
+
+#### Do the Changes Last for a Long time? {-#i}
+
+```{r}
+gender_exp <- speed_dating %>% 
+  select(iid,gender
+         ,attr1_1:shar1_1                        # exp weight to others-1
+         ,pid
+         ,attr1_2:shar1_2                        # exp weight to others-3
+         ,attr1_3:shar1_3                        # exp weight to others-4
+         )
+
+titles <- c("Expectation by Gender (before)",
+            "Expectation by Gender (one day later)",
+            "Expectation by Gender (weeks later)")
+time <- c("before","one day later","weeks later")
+gender_exp_bar=data.frame()
+for (i in 1:3) {
+  gender_exp_tmp <- gender_exp %>% 
+    drop_na() %>% 
+    select(iid,gender,paste("attr1_",i,sep = ""):paste("shar1_",i,sep = "")) %>% 
+    rename("Attractive"=paste("attr1_",i,sep = ""),
+           "Sincere"=paste("sinc1_",i,sep = ""),
+           "Intelligent"=paste("intel1_",i,sep = ""),
+           "Fun"=paste("fun1_",i,sep = ""),
+           "Ambitious"=paste("amb1_",i,sep = ""),
+           "Shared_hobbies"=paste("shar1_",i,sep = "")) %>%
+    mutate(gender = ifelse(gender == 0, "Female","Male"),time=time[i]) %>% 
+    gather(key="attribute",value="weight",-iid,-gender,-time) %>% 
+    unique()
+  
+  gender_exp_tmp$attribute <- factor(gender_exp_tmp$attribute)
+  gender_exp_tmp$gender <- factor(gender_exp_tmp$gender)
+  gender_exp_tmp$time <- factor(gender_exp_tmp$time)
+  
+  gender_exp_bar <- rbind(gender_exp_bar,gender_exp_tmp)
+}
+
+gender_exp_bar <- gender_exp_bar %>% group_by(gender,time,attribute) %>% 
+  summarise(weight=mean(weight)) %>% 
+  mutate(weight=weight/sum(weight)*100) %>% 
+  ungroup()
+gender_exp_bar %>% 
+  ggplot(aes(x=time,y=weight,color=gender,group=gender))+
+  geom_line()+
+  geom_point()+
+  xlab("Time")+
+  ylab("Weight")+
+  facet_wrap(gender_exp_bar$attribute)+
+  labs(color = "Attributes",title = "Expectaion to Partners (by Gender)")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
+```
+
+
+To check does the dating have a long-term influence on people's expectations towards their partners, we did an analysis basing on the observations who answered the questions two weeks after.
+Although only part of the participants answered the questions again two weeks after the dating, there is still 6800 records (449 individuals). From the graph we found that one-time dating only has a short-term influence on people's expectations towards their partners. As time pass by, their expectations tended to come back to the level before the datings.
+
+This finding is reasonable since they were only one-time datings. However, to get a conclusion about whether people's mind change after dating, we need to seperate the groups into matched and unmatched.
+
+
+```{r}
+gender_exp <- speed_dating %>% 
+  select(iid,gender
+         ,attr1_1:shar1_1                        # exp weight to others-1
+         ,pid,match
+         ,attr1_2:shar1_2                        # exp weight to others-3
+         # ,attr1_3:shar1_3                        # exp weight to others-4
+         )
+
+titles <- c("Expectation by Gender (before)",
+            "Expectation by Gender (one day later)",
+            "Expectation by Gender (weeks later)")
+time <- c("before","one day later","weeks later")
+gender_exp_bar=data.frame()
+for (i in 1:2) {
+  gender_exp_tmp <- gender_exp %>% 
+    drop_na() %>% 
+    select(iid,gender,match,paste("attr1_",i,sep = ""):paste("shar1_",i,sep = "")) %>% 
+    rename("Attractive"=paste("attr1_",i,sep = ""),
+           "Sincere"=paste("sinc1_",i,sep = ""),
+           "Intelligent"=paste("intel1_",i,sep = ""),
+           "Fun"=paste("fun1_",i,sep = ""),
+           "Ambitious"=paste("amb1_",i,sep = ""),
+           "Shared_hobbies"=paste("shar1_",i,sep = "")) %>%
+    mutate(gender = ifelse(gender == 0, "Female","Male"),
+           match = ifelse(match == 1, "matched","unmatched"),
+           time=time[i]) %>% 
+    gather(key="attribute",value="weight",-iid,-gender,-time,-match) %>% 
+    unique()
+  
+  gender_exp_tmp$attribute <- factor(gender_exp_tmp$attribute)
+  gender_exp_tmp$gender <- factor(gender_exp_tmp$gender)
+  gender_exp_tmp$time <- factor(gender_exp_tmp$time)
+  gender_exp_tmp$match <- factor(gender_exp_tmp$match)
+  
+  gender_exp_bar <- rbind(gender_exp_bar,gender_exp_tmp)
+}
+
+gender_exp_bar <- gender_exp_bar %>% group_by(gender,time,match,attribute) %>% 
+  summarise(weight=mean(weight)) %>% 
+  mutate(weight=weight/sum(weight)*100) %>% 
+  ungroup() %>% 
+  spread(time,weight) %>% 
+  mutate(change=`one day later`-before)
+
+gender_exp_bar %>% 
+  ggplot(aes(x=attribute,y=change,fill=attribute))+
+  geom_bar(stat = "identity")+
+  # geom_point()+
+  facet_grid(gender_exp_bar$gender~gender_exp_bar$match)+
+  labs(fill = "Attributes",title = "Expectaion to Partners (by Gender and Match)", x = "Attribute", y="Change")+
+  scale_fill_viridis_d()+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
+```
+
+There is no obvious difference between the expections of matched group and unmatched groups, which means whether people are on a dating or not does not influence their expections to their partners (if they are not dating secretly or with another person except for the one they meet in this event).
+
+### Self-evaluation {-#i}
+
+#### How Does Self-Evaluation Change Before and After Datings? {-#i}
+```{r}
+gender_eva <- speed_dating %>% 
+  select(iid,gender,
+         attr3_1:amb3_1                         # self-evaluate-1 (self)-1
+         ,pid
+         ,attr3_2:amb3_2                        # self-evaluate-1 (self)-3
+         # ,attr3_3:amb3_3                        # self-evaluate-1 (self)-4
+         )
+
+time <- c("before","one day later","weeks later")
+
+gender_eva_bar=data.frame()
+for (i in 1:2) {
+  gender_eva_tmp <- gender_eva %>% 
+    drop_na() %>%   
+    select(iid,gender,paste("attr3_",i,sep = ""):paste("amb3_",i,sep = "")) %>% 
+    rename("Attractive"=paste("attr3_",i,sep = ""),
+           "Sincere"=paste("sinc3_",i,sep = ""),
+           "Intelligent"=paste("intel3_",i,sep = ""),
+           "Fun"=paste("fun3_",i,sep = ""),
+           "Ambitious"=paste("amb3_",i,sep = "")) %>%
+    mutate(gender = ifelse(gender == 0, "Female","Male"),time=time[i]) %>% 
+    gather(key="attribute",value="score",-iid,-gender,-time) %>% 
+    unique()
+  
+  gender_eva_tmp$attribute <- factor(gender_eva_tmp$attribute)
+  gender_eva_tmp$gender <- factor(gender_eva_tmp$gender)
+  gender_eva_tmp$time <- factor(gender_eva_tmp$time)
+  
+  gender_eva_bar <- rbind(gender_eva_bar,gender_eva_tmp)
+}
+
+tmp <- gender_eva_bar %>% 
+  spread(time,score) %>% 
+  mutate(change=`one day later`-before) %>% 
+  group_by(gender,attribute,change) %>% 
+  summarise(n=n()) %>% 
+  mutate(n=ifelse(gender=="Female",-n,n))
+
+breaks_values <- pretty(tmp$n)
+
+tmp %>% 
+  ggplot(aes(x=change,y=n,fill=gender))+
+  geom_bar(stat = "identity")+
+  facet_grid(~tmp$attribute)+
+  scale_y_continuous(breaks = breaks_values,
+                     labels = abs(breaks_values))+
+  labs(fill = "Gender",
+       title = "Self-evaluation Changes (by Gender)",
+       y="frequency")+
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),legend.position="bottom")+
+  coord_flip()+
+  xlab("Frenquency")+
+  ylab("Change")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
 
 ```
 
-```{r, child = "Expectation.Rmd"}
+#### Does match influence changes in self-evaluation? {-#i}
+
+```{r }
+gender_eva <- speed_dating %>% 
+  select(iid,gender,
+         attr3_1:amb3_1                         # self-evaluate-1 (self)-1
+         ,pid,match
+         ,attr3_2:amb3_2                        # self-evaluate-1 (self)-3
+         ,attr3_3:amb3_3                        # self-evaluate-1 (self)-4
+         )
+
+time <- c("before","one day later","weeks later")
+
+gender_eva_bar=data.frame()
+for (i in 1:2) {
+  gender_eva_tmp <- gender_eva %>% 
+    drop_na() %>%   
+    select(iid,gender,match,paste("attr3_",i,sep = ""):paste("amb3_",i,sep = "")) %>% 
+    rename("Attractive"=paste("attr3_",i,sep = ""),
+           "Sincere"=paste("sinc3_",i,sep = ""),
+           "Intelligent"=paste("intel3_",i,sep = ""),
+           "Fun"=paste("fun3_",i,sep = ""),
+           "Ambitious"=paste("amb3_",i,sep = "")) %>%
+    mutate(gender = ifelse(gender == 0, "Female","Male"),
+           match = ifelse(match == 1, "matched","unmatched"),
+           time=time[i]) %>% 
+    gather(key="attribute",value="score",-iid,-gender,-time,-match) %>% 
+    unique()
+  
+  gender_eva_tmp$attribute <- factor(gender_eva_tmp$attribute)
+  gender_eva_tmp$gender <- factor(gender_eva_tmp$gender)
+  gender_eva_tmp$time <- factor(gender_eva_tmp$time)
+  gender_eva_tmp$match <- factor(gender_eva_tmp$match)
+  
+  gender_eva_bar <- rbind(gender_eva_bar,gender_eva_tmp)
+}
+  
+tmp <- gender_eva_bar %>% 
+  spread(time,score) %>% 
+  mutate(change=`one day later`-before) %>% 
+  group_by(gender,attribute,match,change) %>% 
+  summarise(n=n()) %>% 
+  mutate(n=ifelse(gender=="Female",-n,n))
+
+breaks_values <- pretty(tmp$n)
+
+tmp %>% 
+  ggplot(aes(x=change,y=n,fill=gender))+
+  geom_bar(stat = "identity")+
+  facet_grid(tmp$match~tmp$attribute)+
+  scale_y_continuous(breaks = breaks_values,
+                     labels = abs(breaks_values))+
+  labs(fill = "Gender",
+       title = "Self-evaluation Changes (by Gender)",
+       y="frequency")+
+  theme(legend.position="bottom")+
+  coord_flip()+
+  xlab("Frequency")+
+  ylab("Change")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 
 ```
 
-```{r, child = "self_esteem.Rmd"}
+There is no large difference in self-evaluation regrading to the five attributes (ambitious, attractive, fun, intelligent and sincere) between females and males before and after the datings, nor the matching results influence their self-evaluation.
+
+#### Does the Expectation Influence Whether or not They Decide to Date? {-#i}
+
+Usually people choose to date with someone because he/she has some attributes that attract them. It is likely that people will choose to date with someone who have the expective attributes. To test this assumption, we did the following exploratory. 
+
+```{r }
+gender_mat <- speed_dating %>% 
+  select(iid,gender
+         ,attr1_1:shar1_1                        # exp weight to others-1
+         ,attr3_1:amb3_1                         # self-evaluate-1 (self)-1
+         ,pid,match,dec_o,samerace,goal
+         ,attr:shar,like,prob                                   # score to others
+  ) %>% 
+  drop_na() %>% 
+  mutate(gender = ifelse(gender == 0, "Female","Male"),
+         dec_o=ifelse(dec_o==0,"No","Yes"),
+         goal=ifelse(goal==3|goal==4,"Dating","Other")
+         )
+  
+gender_mat$gender <- factor(gender_mat$gender)
+gender_mat$dec_o <- factor(gender_mat$dec_o)
+gender_mat$goal <- factor(gender_mat$goal)
+```
+
+
+```{r, warning=FALSE}
+tmp <- gender_mat %>% select(iid,gender,dec_o,samerace,
+                      attr:shar,like,prob,goal) %>%                       # score to others
+  mutate(score=(attr+sinc+intel+fun+amb+shar)*100/60) %>% 
+  group_by(gender,goal,score,dec_o) %>% 
+  summarise(n=n()) %>% 
+  mutate(n=ifelse(dec_o=="Yes",n,-n))
+
+breaks_values <- pretty(tmp$n)
+
+tmp %>% 
+  ggplot(aes(x=score,y=n,width=1,fill=dec_o))+
+  geom_bar(stat = "identity")+
+  facet_grid(tmp$gender~tmp$goal,scales = "free")+
+  scale_y_continuous(breaks = breaks_values,
+                     labels = abs(breaks_values))+
+  scale_fill_discrete(name="decision")+
+  labs(title = "Does People Date with Higher Score People?", fill = "Decision")+
+  theme(legend.position="bottom")+
+  coord_flip()+
+  xlab("Frequency")+
+  ylab("Score")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+```
+
+If people made their decisions based on the score they gave, for people they said "yes", the score for them should be higher than for those they said "no". But according to the graph, there is no difference between the distribution of the score between "yes" and "no" groups, even if we seperate people by their goal of participating the event excpet for the female groups whose goal is dating. In the female groups whose goal is dating, they tent to date with people who had higher scores.
+
+### What Influence Their Decisions? {-#i}
+
+
+```{r}
+gender_mat %>% select(iid,gender,dec_o,samerace,
+                      attr:shar,goal,like,prob) %>%                       # score to others
+  mutate(score=(attr+sinc+intel+fun+amb+shar)*100/60) %>% 
+  ggplot(aes(like,score,color=gender))+
+  geom_point()+
+  labs(title = "Scores and Likes")
+```
+
+
+The graph above shows that score and a good impression (`like`) of a person has a positive relationship, which means if scores did not influence people's decisions, a good impression mattered little.
+
+```{r, fig.width=10,fig.height=4}
+# prob: how likely do you think others will say yes to you?
+
+tmp <- gender_mat %>% mutate(like=round(like)) %>% 
+  group_by(gender,like,dec_o) %>% 
+  summarise(n=n()) %>% 
+  spread(dec_o,n) %>% 
+  mutate(yn_ratio=Yes/No)
+p1 <- tmp[!is.na(tmp$yn_ratio),] %>% 
+  ggplot(aes(x=like,y=yn_ratio,color=gender))+
+  geom_line()+
+  geom_point()+
+  scale_x_continuous(breaks = seq(0,10,2))+
+  labs(x="Like",y="Yes-No Ratio of Decisions", color = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+p2 <- tmp[!is.na(tmp$yn_ratio),] %>% 
+  ggplot(aes(x=like,y=Yes+No,fill=gender))+
+  geom_bar(stat="identity",position="dodge")+
+  scale_x_continuous(breaks = seq(0,10,2))+
+  labs(x="Like",y="Frequency", fill = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+gridExtra::grid.arrange(p1,p2,nrow=1,top="Likes Do not Influence Decisions")
+
+
+tmp <- gender_mat %>% mutate(prob=round(prob)) %>% 
+  group_by(gender,prob,dec_o) %>% 
+  summarise(n=n()) %>% 
+  spread(dec_o,n) %>% 
+  mutate(yn_ratio=Yes/No)
+par(mfrow=c(1,2))
+p3 <- tmp[!is.na(tmp$yn_ratio),] %>% 
+  ggplot(aes(x=prob,y=yn_ratio,color=gender))+
+  geom_line()+
+  geom_point()+
+  scale_x_continuous(breaks = seq(0,10,2))+
+  labs(x="Probability of Being chosen",y="Yes-No Ratio of Decisions", color = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+p4 <- tmp[!is.na(tmp$yn_ratio),] %>% 
+  ggplot(aes(x=prob,y=Yes+No,fill=gender))+
+  geom_bar(stat="identity",position="dodge")+
+  scale_x_continuous(breaks = seq(0,10,2))+
+  labs(x="Probability of Being Chosen",y="Frequency", fill = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+gridExtra::grid.arrange(p3,p4,nrow=1,top="Others' Opinions Influence Decisions")
 
 ```
+
+
+The first graph shows how much do people like their partners. And the second graph shows how likely do people think their partner would like to date with them, namely, say "yes" to them. The graph on the right side is the number of people who gave the score. We use yes-no ratio (the number of people who said "yes" against those who said "no") to denote the decision of the group. If the ratio is larger than one, means among the people who gave the score, the majority of them want to date with partners.
+
+From the graph, we confirmed that whether or not a person like his/her partner did not have a large influence on his/her decision, namely, they did date with someone they like best. Instead, they tended to choose those who might like them. For females, if they thought a male was 70% likely to say "yes" to themselves, they will also say "yes". For males, if they thought a female was 80% likely to say "yes" to themselves, they will also say "yes".
+
+
+## Do People with Excess Self-Esteem Get More Romantic Interest?
+
+```{r, echo = FALSE}
+
+load("data/speed_dating.RData")
+
+## keep only variables of interest
+confidence <- speed_dating %>% select(iid, gender, pid, dec_o,
+                                      samerace,
+                                      attr3_1:amb3_1, attr3_2:amb3_2,
+                                      attr_o:amb_o)
+
+## get self-rate scores (before the event)
+self_eval <- confidence %>% select(iid, attr3_1:amb3_1) %>% 
+  group_by(iid) %>% 
+  summarise_at(vars(attr3_1:amb3_1), mean, na.rm = TRUE) %>%
+  gather(key = attr, value = self_score, -iid) %>% 
+  filter(!is.na(self_score)) %>%
+  mutate(attr = gsub("3_1", "", attr))
+
+## get self-rate scores (after the event)
+self_eval_after <- confidence %>% select(iid, attr3_2:amb3_2) %>% 
+  group_by(iid) %>% 
+  summarise_at(vars(attr3_2:amb3_2), mean, na.rm = TRUE) %>%
+  gather(key = attr, value = self_score_after, -iid) %>% 
+  filter(!is.na(self_score_after)) %>%
+  mutate(attr = gsub("3_2", "", attr))
+
+## get averaged peer-rate scores
+peer_eval <- confidence %>% select(iid, attr_o:amb_o) %>% 
+  group_by(iid) %>% 
+  summarise_at(vars(attr_o:amb_o), mean, na.rm = TRUE) %>%
+  gather(key = attr, value = peer_score, -iid) %>% 
+  filter(!is.na(peer_score)) %>%
+  mutate(attr = gsub("_o", "", attr))
+
+## get the number of likes for each subject
+sublect_match <- confidence %>% group_by(iid) %>% 
+  summarize(picked = sum(dec_o), total = n()) %>%
+  mutate(proportion = picked/total)
+
+## join all three dataframes and compute %like
+eval_df <- self_eval %>% inner_join(peer_eval, by = c("iid"="iid", "attr"="attr")) %>%
+  inner_join(self_eval_after, by = c("iid"="iid", "attr"="attr")) %>%
+  group_by(iid, attr) %>%
+  summarise_all(mean) %>% 
+  mutate(diff_before = self_score - peer_score) %>%
+  left_join(sublect_match, by = "iid") %>%
+  left_join(confidence %>% select(iid, gender), by="iid") %>%
+  ungroup()
+
+temp <- speed_dating %>% 
+  select(iid, race, from, field_cd, sports:yoga) %>% 
+  unique()
+
+diff_df <- eval_df %>% 
+  select(iid, gender, attr, diff_before, proportion, self_score, peer_score) %>% 
+  mutate(gender = as.factor(gender)) %>%
+  unique() %>% 
+  left_join(temp, by ="iid") %>% 
+  mutate(field_cd = as.factor(field_cd),
+         race = as.factor(race)) %>% 
+  unique
+```
+
+Self-enhancement is one kind of motivations that makes people feel good and boosts their confidence (https://en.wikipedia.org/wiki/Self-enhancement). Epley and Whitchurch's work is one evidence supporting the idea that people tend to see themselves better that the reality (https://journals.sagepub.com/doi/abs/10.1177/0146167208318601?journalCode=pspc). The phenomenon is also known as "illusory superiority", where the majority of people evaluates themself as better than the average.
+
+It is widely believed that confident people preform better in various tasks including in relationships (see [Link](https://www.psychologytoday.com/us/blog/shyness-is-nice/201809/why-self-confidence-is-more-important-you-think)). This section of the analysis focuses on this idea. Specifically, we want to know if *confident people get more interests during the Speed Dating session*.
+
+Given the dataset, we define confidence, or excess self-esteem, as how much higher a subject evaluates itself than other people rate the subject (`peer score`). That is, the varaible excess self-esteem is calculated by subtracting an averaged evaluation score given by others from the score given to self. A large positive difference indicates highly excess self-esteem. A large negative difference suggests very low self-esteem. The variable is called `self-esteem` in the analysis and `peer score` is an average score a subject received from other people.
+
+
+![http://images.lipy.com/women-vs-men](img/3_self_esteem.jpg)
+
+One distinct characteristics of participants is gender. However, the previous question found no difference between genders. Moreover, this characteristics does not distinguish subjects in terms of their excess self-esteem. Below are distributions of score differences for each gender in each attribute. Their distribution are similar, peaking at around 1 with almost identical spread. 
+
+
+```{r, figwidth = 12}
+attr_list <- c("amb"="Ambitious", "attr"="Attractive", "fun"="Fun", "intel"="Intelligent", "sinc"="Sincere")
+ggplot(eval_df %>% mutate(gender = ifelse(gender == 0, "Female", "Male"),
+                          gender = as.factor(gender),
+                          attr = attr_list[attr]), aes(x=diff_before, fill = gender)) + 
+  geom_density(alpha = 0.5) + 
+  ggtitle("Histogram of Evaluation Ratio") + 
+  xlab("Ratio") + 
+  ylab("Density")+
+  labs(fill = "Gender")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+```
+
+When `self-esteem` is plotted against the proportion of people who want to meet with a subject again, referred to as `interest proportion`, the only small difference between gender is that female participants tend to get higher interest proportion than male participants. This is shown by more red dots locating at the top and more blue dots at the bottom of the graph. However, dots at the top and the bottom constitute only a small number of participants. Therefore, this analysis treat both genders collectively. 
+
+```{r, fig.width=12}
+## color by gender
+ggplot(diff_df, aes(x=diff_before, y = proportion, color = gender)) + 
+  geom_point(alpha = 0.5) + 
+  facet_grid(~attr) + 
+  xlab("Self Esteem") + 
+  ylab("Interest Proportion")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+```
+
+The plots above also suggest that people with excess self-esteem generally have low interest proportion. The correlation is stronger in fun and attractive, with the most negative correlation in attractive. That is, a participant with lower self-esteem in his/her own attractive and fun tends to get more romatic interest from the others. 
+
+```{r}
+cor_list <- lapply(eval_df$attr %>% unique(), function(a){
+  attr_eval_df <- eval_df%>% ungroup() %>% filter(attr == a) %>% select(diff_before, proportion)
+  c <- cor(attr_eval_df$diff_before, attr_eval_df$proportion)
+  return(data.frame("Attribute"=a, "Correlation" = c))
+})
+
+attr_list <- c("attr"="Attractive", "sinc"="Sincere", "amb"="Ambitious", "fun"="Fun", "intel"="Intelligent")
+cor_df <- do.call(rbind, cor_list) %>% mutate(Attribute = attr_list[Attribute])
+cor_df %>% kable() %>% kable_styling()
+```
+
+The fact that attractive has the strongest correlation with interest proportion should not be surprising since it is the attribute that people look for the most in their partner (discussed in previous question). The next part narrows its focus down to attractive attribute only.
+
+Below is a plot of `peer score` against `interest proportion`. Data points are colored by `self esteem`. Darker color indicates a person with lower self-esteem.
+
+```{r}
+ggplot(diff_df %>% filter(attr == "attr") %>%
+         rename(self_esteem = diff_before), 
+       aes(x=peer_score , y =  proportion, color = self_esteem)) + 
+  geom_point() + 
+  xlab("Peer Score") + 
+  ylab("Interest Proportion")+
+  labs(color = "Self Esteem", title = "Higher Self Esteem will Result in Less Interest")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+```
+
+The plot shows a linear relationship between peer evaluation score and interest proportion. A person who, other people think, is attractive gain more romantic interest proportion, especially when the average score is below 5. The linear relationship becomes weaker for those with score larger than 6.
+
+We also found that people who are less confident in their attractiveness tend to get more interests. This is shown by darker dots at the top right of the plot. Poeple with low self-esteem gain more proportion of interest.
+
+Before jumping into a conclusion that being attractive is what matters, we inspect other characteristics of subjects. We are curious about whether there are some confounding varaibles (other than what has been explored in the previous questions) that get a subject more romantic interest. All the graphs below are relationships between `peer score` on attractive and `interest proportion`. Dots are colored by other characterisitcs that we want to inspect.
+
+#### Race
+
+```{r}
+race_list <- c("Black/African American", "European/Caucasian-American", "Latino/Hispanic American",
+               "Asian/Pacific Islander/Asian-American", "Native American", "Other")
+
+
+pl1 <- ggplot(diff_df %>% filter(attr == "attr") %>% 
+         select(iid, race) %>% 
+         group_by(race) %>%
+         summarize(cnt = n()) %>%
+         mutate(race = race_list[race]), aes(x = fct_reorder(race, cnt), y = cnt, fill = race)) + 
+  geom_col() + coord_flip() + 
+  xlab("") + 
+  ylab("count")  +
+  ggtitle("The Number of Students by Race") + 
+  scale_fill_viridis_d() + 
+  theme(legend.position = "none")
+
+pl2 <- ggplot(diff_df %>% filter(attr == "attr") %>%
+         mutate(race = race_list[race]), 
+         aes(x=peer_score, y = proportion, color = race)) + 
+  geom_point(alpha = 1) +
+  xlab("Peer Score for Attractive") + 
+  ylab("Interest Proportion") +
+  ggtitle("Race has no Effect on Interest Proportion\nand Attractive Score") +
+  scale_color_viridis_d()
+
+ggplotly(pl1, tooltip = c("cnt"))
+ggplotly(pl2, tooltip = c("race"))
+
+
+#subplot(ggplotly(pl1, tooltip = c("cnt")), ggplotly(pl2, tooltip = c("race")),nrows=1)
+```
+
+We find no pattern among `proportion`, `peer_score`, and `race`.
+
+#### Field of Study
+
+```{r}
+field_list <- c("Law", "Math", "Social Science", "Psychologist", "Medical Science", "Pharmaceuticals and Bio Tech",
+                "Engineering", "English/Creative Writing/ Journalism", "History/Religion/Philosophy",
+                "Business/Econ/Finance", "Education, Academia", "Biological Sciences/Chemistry/Physics",
+                "Social Work", "Undergrad/undecided", "Political Science/International Affairs", "Film",
+                "Fine Arts/Arts Administration", "Languages", "Architecture", "Other")
+
+pl1 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cd)) %>% 
+         select(iid, field_cd) %>% 
+         group_by(field_cd) %>%
+         summarize(cnt = n()) %>%
+         mutate(study_field = field_list[field_cd]), 
+         aes(x = fct_reorder(study_field, cnt), y = cnt, fill = study_field)) + 
+  geom_col() + coord_flip() + 
+  xlab("") + 
+  ylab("count") +
+  ggtitle("The Number of Students by Study Field") + 
+  scale_fill_viridis_d()+
+  theme(legend.position = "none")
+
+## field X
+pl2 <- ggplot(diff_df %>% 
+                filter(attr == "attr", !is.na(field_cd)) %>%
+         mutate(study_field = field_list[field_cd]), 
+         aes(x=peer_score, y = proportion, color = study_field)) + 
+  geom_point(alpha = 1) +
+  xlab("Attractive Peer Score") + 
+  ylab("Interest Proportion") + 
+  ggtitle("Field of Study has no effect on\nInterest Proportion and Attractive Score") +
+  scale_color_viridis_d()
+
+ggplotly(pl1, tooltip = c("cnt"))
+ggplotly(pl2, tooltip = c("field_cd"))
+
+#subplot(ggplotly(pl1, tooltip = c("cnt")), ggplotly(pl2, tooltip = c("field_cd")), nrows=1)
+```
+
+
+```{r}
+fc <- read.csv("data/field_cat.csv") %>% 
+  mutate(cd = row_number())
+cat_list <- fc$cat %>% as.character()
+names(cat_list) <- fc$cd
+
+diff_df <- diff_df %>% mutate(field_cate_cd = cat_list[field_cd]) 
+```
+
+In addition to considering individual majors, we create major categories to see any general pattern that involves in school majors. 
+
+```{r, fig.width = 8}
+pl1 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)) %>%  
+         select(iid, field_cate_cd)%>% 
+         group_by(field_cate_cd) %>%
+         summarize(cnt = n()), 
+         aes(x = fct_reorder(field_cate_cd, cnt), y = cnt, fill = field_cate_cd)) + 
+  geom_col() + 
+  coord_flip() + 
+  xlab("") + 
+  ylab("count")  + 
+  ggtitle("The Number of Students by Field Category") +
+  scale_fill_viridis_d() + 
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+
+pl2 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)) %>% mutate(field_category = field_cate_cd), 
+       aes(x=peer_score, y = proportion, color = field_category)) + 
+  geom_point(alpha = 1) + 
+  xlab("Attractive Peer Score") + 
+  ylab("Interest Proportion") + 
+  ggtitle("Field Category has no effect on\nInterest Proportion and Attractive Score") +
+  scale_color_viridis_d()+theme( axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
+
+ggplotly(pl1, tooltip = c("cnt"))
+ggplotly(pl2, tooltip = c("field_category"))
+#grid.arrange(pl1, pl2, ncol = 2)
+
+#subplot(ggplotly(pl1, tooltip = c("cnt")), ggplotly(pl2, tooltip = c("field_category")), nrows=1)
+```
+
+There is also no pattern among `proportion`, `peer_score`, and study `field`.
+
+As far as we know, attractiveness is the only characteristic that have the strongest correlation with interest propotion. In conclusion, we found that people with low self-esteem in their attractiveness gain more romantic interest after the event. 
+

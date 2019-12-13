@@ -63,7 +63,7 @@ diff_df <- eval_df %>%
   unique
 ```
 
-Self-enhancement is one kind of motivation that makes people feel good and boost their confidence (https://en.wikipedia.org/wiki/Self-enhancement). Epley and Whitchurch's work is one evidence supporting the idea that people tend to see themselves better that the reality (https://journals.sagepub.com/doi/abs/10.1177/0146167208318601?journalCode=pspc). The phenomenon is also known as "illusory superiority", where the majority of people evaluates themself as better than the average.
+Self-enhancement is one kind of motivations that makes people feel good and boosts their confidence (https://en.wikipedia.org/wiki/Self-enhancement). Epley and Whitchurch's work is one evidence supporting the idea that people tend to see themselves better that the reality (https://journals.sagepub.com/doi/abs/10.1177/0146167208318601?journalCode=pspc). The phenomenon is also known as "illusory superiority", where the majority of people evaluates themself as better than the average.
 
 It is widely believed that confident people preform better in various tasks including in relationships (see [Link](https://www.psychologytoday.com/us/blog/shyness-is-nice/201809/why-self-confidence-is-more-important-you-think)). This section of the analysis focuses on this idea. Specifically, we want to know if *confident people get more interests during the Speed Dating session*.
 
@@ -72,7 +72,7 @@ Given the dataset, we define confidence, or excess self-esteem, as how much high
 
 ![http://images.lipy.com/women-vs-men](img/3_self_esteem.jpg)
 
-One distinct characteristics of participants is gender. However, the previous question found no difference between genders. Moreover, this characteristics does not distinquish subjects in terms of their excess self-esteem. Below are distribution of score difference for each gender in each attribute. Their distribution are similar, peaking at around 1 with almost identical spread. 
+One distinct characteristics of participants is gender. However, the previous question found no difference between genders. Moreover, this characteristics does not distinguish subjects in terms of their excess self-esteem. Below are distributions of score differences for each gender in each attribute. Their distribution are similar, peaking at around 1 with almost identical spread. 
 
 
 ```{r, figwidth = 12}
@@ -100,7 +100,7 @@ ggplot(diff_df, aes(x=diff_before, y = proportion, color = gender)) +
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
-The plots above also suggest that people with excess self-esteem generally have low interest proportion. The correlation is stronger in fun and attractive, with the most negative correlation in attractive. That is, a participant with lower self-esteem in his/her own attractive and fun tend to get more romatic interest from the others. 
+The plots above also suggest that people with excess self-esteem generally have low interest proportion. The correlation is stronger in fun and attractive, with the most negative correlation in attractive. That is, a participant with lower self-esteem in his/her own attractive and fun tends to get more romatic interest from the others. 
 
 ```{r}
 cor_list <- lapply(eval_df$attr %>% unique(), function(a){
@@ -129,11 +129,11 @@ ggplot(diff_df %>% filter(attr == "attr") %>%
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
-The plot shows a linear relationship between peer evaluation score and interest proportion. A person who, othter people think, is attractive gain more romantic interest proportion, especially when average score is below 5. The linear relationship becomes weaker for those with score larger than 6.
+The plot shows a linear relationship between peer evaluation score and interest proportion. A person who, other people think, is attractive gain more romantic interest proportion, especially when the average score is below 5. The linear relationship becomes weaker for those with score larger than 6.
 
-We also found that people who are less confident in their attractiveness tend to get more interests. This is shown by darker dots at the top right of the plot. Poeple with low self esteem gain more proportion of interest.
+We also found that people who are less confident in their attractiveness tend to get more interests. This is shown by darker dots at the top right of the plot. Poeple with low self-esteem gain more proportion of interest.
 
-Before jumping into a conclusion that being attractive is what matters, we inspect other characteristics of subjects. We are curious whether there are some confounding varaibles (other than what has been explored in the previous questions) that get a subject more romantic interest. All the graphs below are relationships between `peer score` on attractive and `interest proportion`. Dots are colored by other characterisitcs that we want to inspect.
+Before jumping into a conclusion that being attractive is what matters, we inspect other characteristics of subjects. We are curious about whether there are some confounding varaibles (other than what has been explored in the previous questions) that get a subject more romantic interest. All the graphs below are relationships between `peer score` on attractive and `interest proportion`. Dots are colored by other characterisitcs that we want to inspect.
 
 #### Race
 
@@ -255,4 +255,4 @@ ggplotly(pl2, tooltip = c("field_category"))
 
 There is also no pattern among `proportion`, `peer_score`, and study `field`.
 
-As far as we know, attractiveness is the only characteristic that have the strongest correlation with interest propotion. In conclusion, we found that people with low self esteem in their attractiveness gain more romantic interest after the event. 
+As far as we know, attractiveness is the only characteristic that have the strongest correlation with interest propotion. In conclusion, we found that people with low self-esteem in their attractiveness gain more romantic interest after the event. 
