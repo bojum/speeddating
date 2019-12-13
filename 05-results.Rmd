@@ -258,11 +258,7 @@ calc_diff <- function(y){
   return(result)
 }
 cd_df <- do.call(rbind,lapply(paste0('same',colnames(speed_dating %>% select(sports:yoga))),calc_diff))
-ggplot(cd_df,aes(x=Freq,y=fct_reorder2(hobby, share_hobby == 'Yes',Freq, .desc=FALSE), color = fct_rev(share_hobby)))+geom_point(size = 3)+ylab("Hobbies")+xlab("Percent (%)")+ggtitle("Chances of Matching")+labs(color="Participants Share this Hobby")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),
-        axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
-        plot.title = element_text(size = 20, face = "bold"),
-        legend.title = element_text(size=16), 
-           legend.text = element_text(size=14))
+ggplot(cd_df,aes(x=Freq,y=fct_reorder2(hobby, share_hobby == 'Yes',Freq, .desc=FALSE), color = fct_rev(share_hobby)))+geom_point(size = 3)+ylab("Hobbies")+xlab("Percent (%)")+ggtitle("Chances of Matching")+labs(color="Participants Share this Hobby")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16), axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14))+scale_color_viridis_d()
 ```
 
 As we can see from the graph, yoga and clubbing are both crucial factors that could swing the chance of getting matched to your favor. Considering those are nitch hobbies, it makes sense that the rarity of finding someone with the same interest raises your interest for your partner. Even if they are not interested in dating, there is a possibility that they could be asnwering yes to exchange contact information just to be normal friends.
@@ -292,6 +288,7 @@ speed_dating %>% select(iid,goal) %>%
   labs(x="goal",title = "The Reason People Participate the Experiment")+
   xlab("Goal")+
   ylab("Frequency")+
+  scale_fill_viridis_d()+
   theme(legend.position = "none")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14))
 ```
 
@@ -349,6 +346,7 @@ gender_exp_bar %>%
   labs(fill = "Attributes",title = "Expectaion to Partners (by Gender)")+
   xlab("Gender")+
   ylab("Weight")+
+  scale_fill_viridis_d()+
   theme(legend.position = "none")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14))
 ```
 
@@ -408,6 +406,7 @@ gender_exp_bar %>%
   xlab("Time")+
   ylab("Weight")+
   facet_wrap(gender_exp_bar$attribute)+
+  scale_color_viridis_d()+
   labs(color = "Attributes",title = "Expectaion to Partners (by Gender)")+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
 ```
@@ -533,6 +532,7 @@ tmp %>%
   coord_flip()+
   xlab("Frenquency")+
   ylab("Change")+
+  scale_fill_viridis_d()+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12))
 
 ```
@@ -596,6 +596,7 @@ tmp %>%
   coord_flip()+
   xlab("Frequency")+
   ylab("Change")+
+  scale_fill_viridis_d()+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 
 ```
@@ -642,7 +643,7 @@ tmp %>%
   facet_grid(tmp$gender~tmp$goal,scales = "free")+
   scale_y_continuous(breaks = breaks_values,
                      labels = abs(breaks_values))+
-  scale_fill_discrete(name="decision")+
+  scale_fill_viridis_d()+
   labs(title = "Does People Date with Higher Score People?", fill = "Decision")+
   theme(legend.position="bottom")+
   coord_flip()+
@@ -662,7 +663,8 @@ gender_mat %>% select(iid,gender,dec_o,samerace,
   mutate(score=(attr+sinc+intel+fun+amb+shar)*100/60) %>% 
   ggplot(aes(like,score,color=gender))+
   geom_point()+
-  labs(title = "Scores and Likes")
+  scale_color_viridis_d()+
+  labs(title = "Scores and Likes", x = "Like", y = "Score", color = "Gender")
 ```
 
 
@@ -702,6 +704,7 @@ p3 <- tmp[!is.na(tmp$yn_ratio),] %>%
   ggplot(aes(x=prob,y=yn_ratio,color=gender))+
   geom_line()+
   geom_point()+
+  scale_color_viridis_d()+
   scale_x_continuous(breaks = seq(0,10,2))+
   labs(x="Probability of Being chosen",y="Yes-No Ratio of Decisions", color = "Gender")+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
@@ -709,6 +712,7 @@ p4 <- tmp[!is.na(tmp$yn_ratio),] %>%
   ggplot(aes(x=prob,y=Yes+No,fill=gender))+
   geom_bar(stat="identity",position="dodge")+
   scale_x_continuous(breaks = seq(0,10,2))+
+  scale_fill_viridis_d()+
   labs(x="Probability of Being Chosen",y="Frequency", fill = "Gender")+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 gridExtra::grid.arrange(p3,p4,nrow=1,top="Others' Opinions Influence Decisions")
