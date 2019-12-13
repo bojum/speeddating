@@ -682,6 +682,7 @@ p1 <- tmp[!is.na(tmp$yn_ratio),] %>%
   ggplot(aes(x=like,y=yn_ratio,color=gender))+
   geom_line()+
   geom_point()+
+  scale_color_viridis_d()+
   scale_x_continuous(breaks = seq(0,10,2))+
   labs(x="Like",y="Yes-No Ratio of Decisions", color = "Gender")+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
@@ -689,6 +690,7 @@ p2 <- tmp[!is.na(tmp$yn_ratio),] %>%
   ggplot(aes(x=like,y=Yes+No,fill=gender))+
   geom_bar(stat="identity",position="dodge")+
   scale_x_continuous(breaks = seq(0,10,2))+
+  scale_fill_viridis_d()+
   labs(x="Like",y="Frequency", fill = "Gender")+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 gridExtra::grid.arrange(p1,p2,nrow=1,top="Likes Do not Influence Decisions")
@@ -812,6 +814,7 @@ ggplot(eval_df %>% mutate(gender = ifelse(gender == 0, "Female", "Male"),
   xlab("Ratio") + 
   ylab("Density")+
   labs(fill = "Gender")+
+  scale_fill_viridis_d()+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
@@ -824,6 +827,7 @@ ggplot(diff_df, aes(x=diff_before, y = proportion, color = gender)) +
   facet_grid(~attr) + 
   xlab("Self Esteem") + 
   ylab("Interest Proportion")+
+  scale_color_viridis_d()+
   theme(axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 ```
 
