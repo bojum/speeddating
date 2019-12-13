@@ -891,7 +891,8 @@ pl2 <- ggplot(diff_df %>% filter(attr == "attr") %>%
   geom_point(alpha = 1) +
   xlab("Peer Score for Attractive") + 
   ylab("Interest Proportion") +
-  ggtitle("Race has no Effect on Interest Proportion\nand Attractive Score") +
+  labs(color = "Race")+
+  ggtitle("Race has no Effect") +
   scale_color_viridis_d()
 
 ggplotly(pl1, tooltip = c("cnt"))
@@ -933,7 +934,7 @@ pl2 <- ggplot(diff_df %>%
   geom_point(alpha = 1) +
   xlab("Attractive Peer Score") + 
   ylab("Interest Proportion") + 
-  ggtitle("Field of Study has no effect on\nInterest Proportion and Attractive Score") +
+  ggtitle("Field of Study has no effect") +
   scale_color_viridis_d()
 
 ggplotly(pl1, tooltip = c("cnt"))
@@ -974,7 +975,7 @@ pl2 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)) %>% muta
   geom_point(alpha = 1) + 
   xlab("Attractive Peer Score") + 
   ylab("Interest Proportion") + 
-  ggtitle("Field Category has no effect on\nInterest Proportion and Attractive Score") +
+  ggtitle("Field Category has no Effect") +
   scale_color_viridis_d()+theme( axis.text.x = element_text(size = 14,angle=30,hjust = 1), axis.title.x = element_text(size = 16),axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),plot.title = element_text(size = 20, face = "bold"),legend.title = element_text(size=16), legend.text = element_text(size=14), strip.text.x = element_text(size = 12), strip.text.y = element_text(size = 12))
 
 ggplotly(pl1, tooltip = c("cnt"))
