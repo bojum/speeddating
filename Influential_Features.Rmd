@@ -60,7 +60,7 @@ speed_dating <- speed_dating[complete.cases(speed_dating[,keeps]), ]
 ```
 
 ```{r}
-save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
+#save(speed_dating_q1, file = "data/speed_dating_q1.Rdata")
 load(file = "data/speed_dating_q1.Rdata")
 speed_dating <- speed_dating_q1
 names = colnames(speed_dating %>% select(sports:yoga))
@@ -298,15 +298,21 @@ cat(
 We then look at all the available features that could be of common interest in the dataset, and see if any of those features heavily impacts the chances of getting matched.
 
 ```{r}
-calc_diff <- function(x){
-  tmp <- speed_dating %>% group_by_(x, 'match') %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
+calc_diff <- function(y){
+  tmp <- speed_dating %>% group_by_(y, 'match') %>% summarize(Freq = n()) %>% ungroup() %>% mutate(match = if_else(match == 1, "Yes", "No"))
   no_rate <- tmp[2,3]/(tmp[2,3]+tmp[1,3])
   yes_rate <- tmp[4,3]/(tmp[3,3]+tmp[4,3])
-  return(yes_rate - no_rate)
+  hobby <- substring(as.character(y), 5)
+  result <- data.frame("hobby" = c(hobby,hobby), "share_hobby" = c("Yes", "No"), "Freq" = c(0,0))
+  result[1,3] <-yes_rate*100
+  result[2,3] <-no_rate*100
+  return(result)
 }
-cd_df <- do.call(rbind,lapply(paste0('same',colnames(speed_dating %>% select(sports:yoga))),calc_diff))*100
-cd_df <- cbind(cd_df, names)
-
-ggplot(cd_df,aes(x=Freq,y=fct_reorder(names,Freq)))+geom_point(color="blue")+ylab("")+xlab("Percent (%)")+ggtitle("Differences in Chance of Matching")
+cd_df <- do.call(rbind,lapply(paste0('same',colnames(speed_dating %>% select(sports:yoga))),calc_diff))
+ggplot(cd_df,aes(x=Freq,y=fct_reorder2(hobby, share_hobby == 'Yes',Freq, .desc=FALSE), color = fct_rev(share_hobby)))+geom_point(size = 3)+ylab("Hobbies")+xlab("Percent (%)")+ggtitle("Chances of Matching")+labs(color="Participants Share this Hobby")+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),
+        axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+        plot.title = element_text(size = 20, face = "bold"),
+        legend.title = element_text(size=16), 
+           legend.text = element_text(size=14))
 ```
 
