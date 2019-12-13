@@ -1,14 +1,5 @@
 ## Question: do people with excess self-esteem get more romantic interest?
 
-```{r, include=FALSE}
-library(ggplot2)
-library(tidyverse)
-library(knitr)
-library(kableExtra)
-library(gridExtra)
-library(plotly)
-```
-
 ```{r, echo = FALSE}
 
 load("data/speed_dating.RData")
