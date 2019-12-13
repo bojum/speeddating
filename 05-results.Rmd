@@ -3,3 +3,11 @@
 ```{r, child = "Influential_Features.Rmd"}
 
 ```
+
+```{r, child = "Expectation.Rmd"}
+
+```
+
+```{r, child = "self_esteem.Rmd"}
+
+```
