@@ -36,14 +36,14 @@ What is love at first sight? Imagine meeting a girl or a guy that you really lik
 
 We use experimental Speed Dating data collected by Columbia Business schooll as a foundation to the analyses in this project. 
 
-Being popular since 1970s, speed dating is a formalized matchmaking process which enables singles to meet large numbers of new potential partners in a very short period of time (4 minutes in our data), which is equivalent to having many “first sights” and being able to choose the potential partners that you like. If both participants like each other, then it is a “match” and they can exchange contact informations and such. 
+Being popular since 1970s, speed dating is a formalized matchmaking process which enables singles to meet large numbers of new potential partners in a very short period of time (4 minutes in our data), which is equivalent to having many “first sights” and being able to choose the potential partners that you like. If both participants like each other, then it is a “match” and they can exchange contact information and such. 
 
-For research purposes, participants in our data were asked to fill out several forms before and during the speed dating process. Our findings are based on such data. 
+For research purposes, participants in our data were asked to fill out several forms before, during, and after the speed dating process. Our findings are based on such data. 
 
 ## Our Goal
 
-In this project, we explore what factors that influence the chances of getting a “match.” For example, will having a same hobby with your partner increase your chances? Or should you behave as confident you can to leave a better impression? If not, what things or factors are your partner looking for? We derive our focus on the factors that you can control.
+In this project, we explore factors that influence the chances of getting a “match.” For example, will having a same hobby with your partner increase your chances? Or should you behave as confident as you can to leave a better impression? If not, what things or factors are your partner looking for? We derive our focus on the factors that you can control.
 
 ## Project Overview
 
-In section 2, we give an overview of our data, where it was from and what issues it may have. Then in section 3 & 4, we describe our data cleaning/transformation process and patterns for missing values. In section 5, we provide our analyses and interesting findings, and the answers to those questions above will be in this section as well. In section 6, we include interative components of the analyses, where you can interact with the graphs and explore interesting findings on your own. We include our conclusions to this project in section 7. 
+In section 2, we give an overview of our data, where it was from and what issues it may have. Then in section 3 and 4, we describe our data cleaning/transformation process and patterns for missing values. In section 5, we provide our analyses and interesting findings, and the answers to those questions above will be in this section as well. In section 6, we include interative components of the analyses, where you can interact with the graphs and explore interesting findings on your own. We include our conclusions to this project in section 7. 
