@@ -6,18 +6,17 @@ There are several issues with the dataset that we use. First, a part of the data
 
 ## Future Directions
 
-The first next step would be to include more interactive components to the analysis to hilight the findings and engage readers. 
+The first next step would be to include more interactive components to the analyses to highlight the findings and engage readers. 
 
-Some current findings in the analyses are not evident enough. This suggests that there may be more factors that we should explore. Based on our results, any appearance features, such as the way participants talk and walk or their poses, are good candidates although these are not easily quantified. If possible, we also would like to conduct statistical tests to verify conclusions we found. 
+Some current findings in the analyses are not evident enough. This suggests that there may be more factors that we should explore. Based on our results, any appearance features, such as the way participants talk and walk or their postures, are good candidates although these are not easily quantified. If possible, we also would like to conduct statistical tests to verify conclusions we found. 
 
 As mentioned in limitations section that things change over time, we find that this is a good topic that we can extend our project towards. If we could gather a similar set of data from the present time, we would like to run the same study on it and compare changes in trends.
 
 ## Lesson Learned
 
-There are a lot we have learned from working on this project. We are aware that interactive part is very important to engage readers. However, to create an interactive graph that can appropriately demonstrate out intent using D3 takes a lot longer time than we expect. Some of the graphs were dropped from the final version because we find static versions better suited out purpose. 
+There are a lot we have learned from working on this project. We are aware that interactive part is very important to engage readers. However, to create an interactive graph that can appropriately demonstrate our intent using D3 takes a lot longer time than we expected. Some of the graphs were dropped from the final version because we find static versions better suited our purpose. 
 
-GitHub can be a very useful resource when working collaboratively, but at the same time, it can cause a number of issues that require us some times to fix. We had to overwrite the entire remote master branch to get over some problems.
+GitHub can be a very useful resource when working collaboratively, but at the same time, it can cause a number of issues that require us some times to fix. We have to overwrite the entire remote master branch to get over some problems.
 
+When we move from EDA to presentation, we find that choosing appropriate forms of graphs is greatly critical. We need to pick presentations for the results that are easy for readers to understand. Nonetheless, we sometimes find that presentations that highlight the results the most are not comprehensive. It is hard to judge where is the right balance between easy-to-read and impactful outcomes. 
 
-3. Choosing appropriate forms of graphs is critical. Findings varies or may be unnoticeable.
-4. Help document and online resources are very important and helpful to our project. E.g. there are many ways to visualize missing value pattern. Packages bahave differently and we need to pick the right one for our project. e.g. mi can produce nice plots but it is not suitable for our project.  
