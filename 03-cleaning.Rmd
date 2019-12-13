@@ -1,11 +1,21 @@
 # Data transformation
 
-The raw dataset contains 195 variables with 8378 rows. Only a subset of 195 variables are included in our analysis (more detail for this step in data transformation section). 
+The raw dataset contains 195 variables with 8378 rows. Only a subset of 195 variables is included in our analysis (more detail for this step in data transformation section). We would like to note that each row represents one meeting (from the perspective of one participant).
+
+The script file that we used to clean and transform the dataset can be found [here](https://github.com/bojum/speeddating/blob/master/03-cleaning.Rmd).
 
 
-Below is a script file that we use to clean the dataset.
+## Filter
 
-```{r, eval = FALSE}
+First, out of the 195 variables (columns), we only keep 70 of them using dplyr::select function. Those 70 variables include their basic information(id, gender, age, race...), their self evaluation scores, their interests in listed hobbies, and the evalution scores they received from partners (partipants of opposite sex).
+
+## Transformation
+
+Next, we want to know whether each participant's partner's share common interests in listed hobbies as the participant, and have this data available in respective indicator columns. However partner's data is not available as variables in the same row as the participant. Luckily, for each entry in the data, the partner's interests in listed hobbies can be found under partner's entry (a different row). So in order to do this, we'd have to look up participant's partner's hobby-data in a different row using partner's id. We then check whether both participant and partner's in each hobby is at least 7 (on a scale from 1 t 10), if so, we enter "Yes" to the indicator column of this hobby, else no. This process is done using do.call, cbind, and lapply.
+
+We do the same for participants basic information, but due to the complexity of the naming of those variables, it is done using a for loop instead of using do.call, cbind, and lapply.
+
+```{r, eval = FALSE, echo=FALSE}
 
 speed_dating <- raw_dat %>% 
   select(iid,wave,gender,age,race,from,field,field_cd,undergra,mn_sat,tuition,income,
@@ -30,6 +40,49 @@ speed_dating <- raw_dat %>%
          ) 
 
 # add indicator columns
+load('data/speed_dating.RData')
+
+# get feature values of the partner
+for (i in 1:nrow(speed_dating)) {
+  # for each row, get partner's id
+  pid = speed_dating[i, 'pid']
+  # add temporary columns that holds partner's location, field, sports, reading, movies
+  speed_dating[i, 'plocation'] = speed_dating[which(speed_dating$iid == pid)[1], 'from']
+  speed_dating[i, 'pfield'] = speed_dating[which(speed_dating$iid == pid)[1], 'field']
+}
+# append indicator columns for location, field, and income
+speed_dating['samelocation'] <- if_else(speed_dating$from == speed_dating$plocation, 'Yes', 'No')
+speed_dating['samefield'] <- if_else(speed_dating$field == speed_dating$pfield, 'Yes', 'No')
+
+# get the feature values of all the hobbies of the partner
+f <- function(x){
+  tmp <- data.frame("holder" = 1:dim(speed_dating)[1])
+  result <- data.frame("holder" = 1:dim(speed_dating)[1])
+  for (i in 1:nrow(speed_dating)){
+    pid = speed_dating[i, 'pid']
+    tmp[i,1] <- speed_dating[which(speed_dating$iid == pid)[1], x]
+  }
+  for (i in 1:nrow(speed_dating)) {
+    result[i,1] <- if_else((tmp[i,1] >=7 & speed_dating[i,x]>=7), 'Yes', 'No')
+  }
+  return(result)
+}
+# append the newly added columns to the original data frame
+names = colnames(speed_dating %>% select(sports:yoga))
+common_features <- as.data.frame(do.call(cbind,lapply(names, f)))
+colnames(common_features)<- paste0('same',colnames(speed_dating %>% select(sports:yoga)))
+speed_dating <- cbind(speed_dating, common_features)
+speed_dating <- speed_dating[, !duplicated(colnames(speed_dating))]
+
+# drop unecessary columns and missing data
+drops = c('plocation', 'pfield')
+speed_dating <- select(speed_dating, -drops)
+keeps = append(paste0('same',colnames(speed_dating %>% select(sports:yoga))), c('samelocation', 'samefield'))
+speed_dating <- speed_dating[complete.cases(speed_dating[,keeps]), ]
+
+
+
+# add indicator columns for basic information 
 
 # operate row by row
 for (i in 1:nrow(speed_dating)) {
@@ -56,3 +109,5 @@ keeps = c('samerace', 'samelocation', 'samefield', 'samesports', 'samesports', '
 speed_dating <- speed_dating[ , !(names(speed_dating) %in% drops)]
 speed_dating <- speed_dating[complete.cases(speed_dating[,keeps]), ]
 ```
+
+
