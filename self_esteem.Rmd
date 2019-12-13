@@ -216,17 +216,19 @@ pl1 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)) %>%
          group_by(field_cate_cd) %>%
          summarize(cnt = n()), 
          aes(x = fct_reorder(field_cate_cd, cnt), y = cnt, fill = field_cate_cd)) + 
-  geom_col() + coord_flip() + 
+  geom_col() + 
+  coord_flip() + 
   xlab("") + 
   ylab("count") +
+  scale_color_colorblind() + 
   theme(legend.position = "none")
 
 pl2 <- ggplot(diff_df %>% filter(attr == "attr", !is.na(field_cate_cd)), 
        aes(x=peer_score, y = proportion, color = field_cate_cd)) + 
-  geom_point(alpha = 1) +
-  theme(legend.position = "none") + 
+  geom_point(alpha = 1) + 
   xlab("Attractive Peer Score") + 
-  ylab("Interest Proportion")
+  ylab("Interest Proportion") + 
+  scale_color_colorblind()
 
 ggplotly(pl1, tooltip = c("cnt"))
 ggplotly(pl2, tooltip = c("field_cate_cd"))

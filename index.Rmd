@@ -19,6 +19,7 @@ library(vcd)
 library(jsonlite)
 library(gridExtra)
 library(plotly)
+library(ggthemes)
 ```
 
 ```{r, eval = FALSE, echo=FALSE}
